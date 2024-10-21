@@ -52,8 +52,15 @@ public class Canasta extends Create{
 		  vidas--;
 		  herido = true;
 		  tiempoHerido=tiempoHeridoMax;
-		  sonidoHerido.play(0.5f);
+		  sonidoHerido.play(0.05f);
 	   }
+
+       public void sumarVida()
+       {
+           vidas++;
+           tiempoHerido=tiempoHeridoMax;
+
+       }
 
        @Override
 	   public void dibujar(SpriteBatch batch) {

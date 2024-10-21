@@ -3,6 +3,7 @@ package puppy.code;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,6 +20,7 @@ public class GameOverScreen implements Screen {
     private UIBoton botonReiniciar;
     private UIBoton botonSalir;
     private Stage stage;
+    private Texture fondo;
 
 	public GameOverScreen(final GameLluviaMenu game) {
 		this.game = game;
@@ -28,6 +30,7 @@ public class GameOverScreen implements Screen {
 		camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        fondo = new Texture(Gdx.files.internal("fondo.png"));
 
         botonReiniciar = new UIBoton(stage,100,camera.viewportHeight/2-50,font,"Reiniciar juego",new ClickListener(){
             @Override
@@ -56,6 +59,7 @@ public class GameOverScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
+        batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
 		font.draw(batch, "GAME OVER ", 100, camera.viewportHeight/2+50);
 		batch.end();
         botonReiniciar.dibujarComponente();
