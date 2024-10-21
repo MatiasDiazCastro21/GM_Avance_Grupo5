@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class UIButtonCreator implements UI {
+public class UIBoton implements UI {
 
     private final Stage stage;
     private final float posX;
@@ -18,7 +18,7 @@ public class UIButtonCreator implements UI {
     private final ClickListener clickListener;
     private final String textoBoton;
 
-    public UIButtonCreator(Stage stage,float posX, float posY, BitmapFont fontJuego,String textoBoton, ClickListener clickListener) {
+    public UIBoton(Stage stage, float posX, float posY, BitmapFont fontJuego, String textoBoton, ClickListener clickListener) {
         this.posX = posX;
         this.posY = posY;
         this.fontJuego = fontJuego;
@@ -37,19 +37,18 @@ public class UIButtonCreator implements UI {
         textButtonStyle.up = upDrawable;
         textButtonStyle.down = downDrawable;
         textButtonStyle.font = this.fontJuego;
-        TextButton playButton = new TextButton(textoBoton, textButtonStyle);
-        playButton.setSize(200, 50);
-        playButton.setPosition(posX, posY);
-        playButton.addListener(clickListener);
+        TextButton boton = new TextButton(textoBoton, textButtonStyle);
+        boton.setSize(200, 50);
+        boton.setPosition(posX, posY);
+        boton.addListener(clickListener);
+        stage.addActor(boton);
 
-        //Añadir el botón al Stage
-        stage.addActor(playButton);
     }
 
 
     public void dibujarComponente() {
-        stage.act();
         stage.draw();
+        stage.act();
     }
 
     public Stage getStage() {

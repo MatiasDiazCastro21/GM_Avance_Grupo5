@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Lluvia {
+public class Proyectil extends Create{
 	private Array<Rectangle> rainDropsPos;
 	private Array<Integer> rainDropsType;
     private long lastDropTime;
@@ -19,13 +19,13 @@ public class Lluvia {
     private Sound dropSound;
     private Music rainMusic;
 
-	public Lluvia(Texture gotaBuena, Texture gotaMala, Sound ss, Music mm) {
+	public Proyectil(Texture gotaBuena, Texture gotaMala, Sound ss, Music mm) {
 		rainMusic = mm;
 		dropSound = ss;
 		this.gotaBuena = gotaBuena;
 		this.gotaMala = gotaMala;
 	}
-
+    @Override
 	public void crear() {
 		rainDropsPos = new Array<Rectangle>();
 		rainDropsType = new Array<Integer>();
@@ -37,9 +37,9 @@ public class Lluvia {
         pou.setVolume(0.6f);   // Ajusta el volumen de la música
         pou.play();
         */
-	      rainMusic.setLooping(true);
-          rainMusic.setVolume(0.5f);
-	      rainMusic.play();
+        rainMusic.setLooping(true);
+        rainMusic.setVolume(0.05f);
+        rainMusic.play();
 	}
 
 	private void crearGotaDeLluvia() {
@@ -57,7 +57,7 @@ public class Lluvia {
 	      lastDropTime = TimeUtils.nanoTime();
 	   }
 
-   public boolean actualizarMovimiento(Tarro tarro) {
+   public boolean actualizarMovimiento(Canasta canasta) {
 	   // generar gotas de lluvia
 	   if(TimeUtils.nanoTime() - lastDropTime > 100000000) crearGotaDeLluvia();
 	   // revisar si las gotas cayeron al suelo o chocaron con el tarro
@@ -69,15 +69,15 @@ public class Lluvia {
 	    	  rainDropsPos.removeIndex(i);
 	    	  rainDropsType.removeIndex(i);
 	      }
-	      if(raindrop.overlaps(tarro.getArea())) { //la gota choca con el tarro
+	      if(raindrop.overlaps(canasta.getArea())) { //la gota choca con el tarro
 	    	if(rainDropsType.get(i)==1) { // gota dañina
-	    	  tarro.dañar();
-	    	  if (tarro.getVidas()<=0)
+	    	  canasta.dañar();
+	    	  if (canasta.getVidas()<=0)
 	    		 return false; // si se queda sin vidas retorna falso /game over
 	    	  rainDropsPos.removeIndex(i);
 	          rainDropsType.removeIndex(i);
 	      	}else { // gota a recolectar
-	    	  tarro.sumarPuntos(10);
+	    	  canasta.sumarPuntos(10);
 	          dropSound.play(0.1f);
 	          rainDropsPos.removeIndex(i);
 	          rainDropsType.removeIndex(i);
@@ -86,9 +86,8 @@ public class Lluvia {
 	   }
 	  return true;
    }
-
-   public void actualizarDibujoLluvia(SpriteBatch batch) {
-
+   @Override
+   public void dibujar(SpriteBatch batch) {
 	  for (int i=0; i < rainDropsPos.size; i++ ) {
 		  Rectangle raindrop = rainDropsPos.get(i);
 		  if(rainDropsType.get(i)==1) // gota dañina
@@ -107,5 +106,6 @@ public class Lluvia {
    public void continuar() {
 	  rainMusic.play();
    }
-
+   @Override
+   public void actualizar() {}
 }

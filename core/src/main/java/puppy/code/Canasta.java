@@ -8,8 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-
-public class Tarro {
+public class Canasta extends Create{
 	   private Rectangle bucket;
 	   private Texture bucketImage;
 	   private Sound sonidoHerido;
@@ -21,7 +20,7 @@ public class Tarro {
 	   private int tiempoHerido;
 
 
-	   public Tarro(Texture tex, Sound ss) {
+	   public Canasta(Texture tex, Sound ss) {
 		   bucketImage = tex;
 		   sonidoHerido = ss;
 	   }
@@ -45,15 +44,18 @@ public class Tarro {
 		      bucket = new Rectangle();
 		      bucket.x = 800 / 2 - 64 / 2;
 		      bucket.y = 20;
-		      bucket.width = 64;
-		      bucket.height = 64;
+		      bucket.width = 80;
+		      bucket.height = 80;
 	   }
+
 	   public void dañar() {
 		  vidas--;
 		  herido = true;
 		  tiempoHerido=tiempoHeridoMax;
-		  sonidoHerido.play();
+		  sonidoHerido.play(0.5f);
 	   }
+
+       @Override
 	   public void dibujar(SpriteBatch batch) {
 		 if (!herido)
 		   batch.draw(bucketImage, bucket.x, bucket.y);
@@ -64,7 +66,8 @@ public class Tarro {
 		   if (tiempoHerido<=0) herido = false;
 		 }
 	   }
-	   public void actualizarMovimiento() {
+	   @Override
+       public void actualizar() {
 		   // movimiento desde mouse/touch
 		   /*if(Gdx.input.isTouched()) {
 			      Vector3 touchPos = new Vector3();
@@ -81,12 +84,12 @@ public class Tarro {
 	   }
 
 
-	public void destruir() {
+       public void destruir() {
 		    bucketImage.dispose();
 	   }
 
-   public boolean estaHerido() {
-	   return herido;
-   }
+       public boolean estaHerido() {
+	        return herido;
+       }
 
 }

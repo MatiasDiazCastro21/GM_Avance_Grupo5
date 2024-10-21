@@ -16,8 +16,10 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private Tarro tarro;
-	private Lluvia lluvia;
+	private Canasta canasta;
+	private Proyectil proyectil;
+
+    private Texture fondo;
 
 	//boolean activo = true;
 	public GameScreen(final GameLluviaMenu game) {
@@ -25,50 +27,55 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
         this.font = game.getFont();
 		  // load the images for the droplet and the bucket, 64x64 pixels each
-		  Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
-		  tarro = new Tarro(new Texture(Gdx.files.internal("bucket.png")),hurtSound);
+		  Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
+		  canasta = new Canasta(new Texture(Gdx.files.internal("canasta.png")),explosion);
 
 	      // load the drop sound effect and the rain background "music"
-         Texture gota = new Texture(Gdx.files.internal("drop.png"));
-         Texture gotaMala = new Texture(Gdx.files.internal("dropBad.png"));
+         Texture fruta = new Texture(Gdx.files.internal("Fruta.png"));
+         Texture bomba = new Texture(Gdx.files.internal("Bomba.png"));
 
-         Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
+         Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
 
-	     Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-         lluvia = new Lluvia(gota, gotaMala, dropSound, rainMusic);
+	     Music musicaDeFondo = Gdx.audio.newMusic(Gdx.files.internal("pou.mp3"));
+         proyectil = new Proyectil(fruta, bomba, dropSound, musicaDeFondo);
+
+         fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
 
 	      // camera
 	      camera = new OrthographicCamera();
 	      camera.setToOrtho(false, 800, 480);
 	      batch = new SpriteBatch();
 	      // creacion del tarro
-	      tarro.crear();
+	      canasta.crear();
 
-	      // creacion de la lluvia
-	      lluvia.crear();
+	      // creacion de la proyectil
+	      proyectil.crear();
 	}
 	@Override
 	public void render(float delta) {
 		//limpia la pantalla con color azul obscuro.
 		ScreenUtils.clear(0, 0, 0.2f, 1);
+
 		//actualizar matrices de la cámara
 		camera.update();
 		//actualizar
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+        batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
 		//dibujar textos
-		font.draw(batch, "Gotas totales: " + tarro.getPuntos(), 5, 475);
-		font.draw(batch, "Vidas : " + tarro.getVidas(), 670, 475);
+		font.draw(batch, "Gotas totales: " + canasta.getPuntos(), 5, 475);
+		font.draw(batch, "Vidas : " + canasta.getVidas(), 670, 475);
 		font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
 
-		if (!tarro.estaHerido()) {
+
+		if (!canasta.estaHerido()) {
 			// movimiento del tarro desde teclado
-	        tarro.actualizarMovimiento();
-			// caida de la lluvia
-	       if (!lluvia.actualizarMovimiento(tarro)) {
+	        canasta.actualizar();
+			// caida de la proyectil
+	       if (!proyectil.actualizarMovimiento(canasta)) {
 	    	  //actualizar HigherScore
-	    	  if (game.getHigherScore()<tarro.getPuntos())
-	    		  game.setHigherScore(tarro.getPuntos());
+	    	  if (game.getHigherScore()< canasta.getPuntos())
+	    		  game.setHigherScore(canasta.getPuntos());
 	    	  //ir a la ventana de finde juego y destruir la actual
 	    	  game.setScreen(new GameOverScreen(game));
 	    	  dispose();
@@ -77,8 +84,8 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pause();
         }
-		tarro.dibujar(batch);
-		lluvia.actualizarDibujoLluvia(batch);
+		canasta.dibujar(batch);
+		proyectil.dibujar(batch);
 
 		batch.end();
 
@@ -90,8 +97,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-	  // continuar con sonido de lluvia
-	  lluvia.continuar();
+	  // continuar con sonido de proyectil
+	  proyectil.continuar();
 	}
 
 	@Override
@@ -101,7 +108,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		lluvia.pausar();
+		proyectil.pausar();
 		game.setScreen(new PausaScreen(game, this));
 	}
 
@@ -112,8 +119,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-      tarro.destruir();
-      lluvia.destruir();
+      canasta.destruir();
+      proyectil.destruir();
 
 	}
 

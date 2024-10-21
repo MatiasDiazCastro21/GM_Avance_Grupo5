@@ -3,6 +3,7 @@ package puppy.code;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -18,9 +19,11 @@ public class MainMenuScreen implements Screen {
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private OrthographicCamera camera;
-    private UIButtonCreator botonIniciar;
-    private UIButtonCreator botonSalir;
+    private UIBoton botonIniciar;
+    private UIBoton botonSalir;
+    private UIBoton botonTutorial;
     private Stage stage;
+    private Texture fondo;
 
 
 	public MainMenuScreen(final GameLluviaMenu game) {
@@ -30,19 +33,28 @@ public class MainMenuScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+        fondo = new Texture(Gdx.files.internal("fondo.png"));
 
-        botonIniciar = new UIButtonCreator(stage,100,camera.viewportHeight/2+150,font,"Empezar juego",new ClickListener(){
+
+        botonIniciar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Empezar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Botón clickeado");
                 game.setScreen(new GameScreen(game));
                 dispose();
-
             }
         });
         botonIniciar.crearComponente();
 
-        botonSalir = new UIButtonCreator(stage,100,camera.viewportHeight/2+90,font,"Salir menu",new ClickListener(){
+        botonTutorial = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Tutorial",new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //TODO
+            }
+        });
+        botonTutorial.crearComponente();
+
+        botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-70,font,"Cerrar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
@@ -53,21 +65,23 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		ScreenUtils.clear(0, 0, 0.2f, 1);
+		ScreenUtils.clear(1, 0, 0, 1);
 
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		font.getData().setScale(2, 2);
-		font.draw(batch, "Bienvenido a Recolecta Gotas!!! ", 100, camera.viewportHeight/2+50);
-		font.draw(batch, "Toca en cualquier lugar para comenzar!", 100, camera.viewportHeight/2-50);
-
-        botonSalir.dibujarComponente();
-        botonIniciar.dibujarComponente();
+        font.getData().setScale(2, 2);
+        batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
+		font.draw(batch, "Bienvenido a Recolecta Fruta!!! ", 100, camera.viewportHeight/2+150);
 
 		batch.end();
-	}
+        
+        botonSalir.dibujarComponente();
+        botonIniciar.dibujarComponente();
+        botonTutorial.dibujarComponente();
+
+    }
 
 	@Override
 	public void show() {
@@ -77,8 +91,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+        stage.getViewport().update(width, height, true);
 	}
 
 	@Override

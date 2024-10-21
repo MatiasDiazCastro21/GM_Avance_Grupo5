@@ -6,7 +6,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
 public class PausaScreen implements Screen {
@@ -16,6 +20,9 @@ public class PausaScreen implements Screen {
 	private SpriteBatch batch;
     private BitmapFont font;
 	private OrthographicCamera camera;
+    private Stage stage;
+    private UIBoton botonReanudar;
+    private UIBoton botonSalir;
 
 	public PausaScreen (final GameLluviaMenu game, GameScreen juego) {
 		this.game = game;
@@ -24,6 +31,26 @@ public class PausaScreen implements Screen {
         this.font = game.getFont();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
+
+        botonReanudar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Reanudar juego",new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(juego);
+                dispose();
+            }
+        });
+        botonReanudar.crearComponente();
+
+        botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Salir menu",new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+        botonSalir.crearComponente();
 	}
 
 	@Override
@@ -34,12 +61,15 @@ public class PausaScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		font.draw(batch, "Juego en Pausa ", 100, 150);
-		font.draw(batch, "Toca en cualquier lado para continuar !!!", 100, 100);
-        font.draw(batch, "hola", 100, 50);
+		font.draw(batch, "Juego en Pausa ", 100, camera.viewportHeight/2+150);
 		batch.end();
 
-		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        stage.act();
+        stage.draw();
+        botonReanudar.dibujarComponente();
+        botonSalir.dibujarComponente();
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			game.setScreen(juego);
 			dispose();
 		}
@@ -53,7 +83,7 @@ public class PausaScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+        stage.getViewport().update(width, height, true);
 
 	}
 
