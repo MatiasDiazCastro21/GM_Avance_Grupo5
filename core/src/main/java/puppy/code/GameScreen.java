@@ -18,7 +18,6 @@ public class GameScreen implements Screen {
 	private BitmapFont font;
 	private Canasta canasta;
 	private Proyectil proyectil;
-
     private Texture fondo;
 
 	//boolean activo = true;
@@ -33,11 +32,13 @@ public class GameScreen implements Screen {
 	      // load the drop sound effect and the rain background "music"
          Texture fruta = new Texture(Gdx.files.internal("Fruta.png"));
          Texture bomba = new Texture(Gdx.files.internal("Bomba.png"));
+         Texture vidaExtra = new Texture(Gdx.files.internal("corazon.png"));
 
          Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+         Sound sonidoVida = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
 
 	     Music musicaDeFondo = Gdx.audio.newMusic(Gdx.files.internal("pou.mp3"));
-         proyectil = new Proyectil(fruta, bomba, dropSound, musicaDeFondo);
+         proyectil = new Proyectil(fruta, bomba, vidaExtra,dropSound, musicaDeFondo,sonidoVida);
 
          fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
 
@@ -63,7 +64,7 @@ public class GameScreen implements Screen {
 		batch.begin();
         batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
 		//dibujar textos
-		font.draw(batch, "Gotas totales: " + canasta.getPuntos(), 5, 475);
+		font.draw(batch, "Frutas totales: " + canasta.getPuntos(), 5, 475);
 		font.draw(batch, "Vidas : " + canasta.getVidas(), 670, 475);
 		font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
 

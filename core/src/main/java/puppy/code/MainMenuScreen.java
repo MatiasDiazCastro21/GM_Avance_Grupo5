@@ -36,7 +36,7 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         fondo = new Texture(Gdx.files.internal("fondo.png"));
 
-
+        //Iniciar
         botonIniciar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Empezar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -46,14 +46,18 @@ public class MainMenuScreen implements Screen {
         });
         botonIniciar.crearComponente();
 
+        //Tutorial
         botonTutorial = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Tutorial",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TODO
+                game.setScreen(new TutorialScreen(game));
+                dispose();
             }
         });
         botonTutorial.crearComponente();
 
+
+        //Salir
         botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-70,font,"Cerrar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,7 +80,7 @@ public class MainMenuScreen implements Screen {
 		font.draw(batch, "Bienvenido a Recolecta Fruta!!! ", 100, camera.viewportHeight/2+150);
 
 		batch.end();
-        
+
         botonSalir.dibujarComponente();
         botonIniciar.dibujarComponente();
         botonTutorial.dibujarComponente();
