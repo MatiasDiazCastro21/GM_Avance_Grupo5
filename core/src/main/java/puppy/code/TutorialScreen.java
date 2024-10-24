@@ -20,6 +20,8 @@ public class TutorialScreen implements Screen{
     private OrthographicCamera camera;
     private UIBoton botonRegresar;
     private Stage stage;
+    private Texture flechas, escape;
+    private ImgText tutorialFlecha, tutorialEscape;
     //private Texture fondo;
 
     public TutorialScreen(final GameLluviaMenu game) {
@@ -39,6 +41,12 @@ public class TutorialScreen implements Screen{
             }
         });
         botonRegresar.crearComponente();
+
+        flechas = new Texture(Gdx.files.internal("flechas.png"));
+        tutorialFlecha = new ImgText(font, batch, flechas, "Desplazarse con las flechas", 100, 160, 190, 100,10);
+        escape = new Texture(Gdx.files.internal("escape.png"));
+        tutorialEscape = new ImgText(font, batch, escape, "Para pausar el juego con Escape", 100, 250, 100, 80,40);
+        //escape = new Texture(Gdx.files.internal("escape.png"));
         //fondo = new Texture("fondo.png");
 
     }
@@ -50,12 +58,10 @@ public class TutorialScreen implements Screen{
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        font.draw(batch, "Controles de juego ", 100, camera.viewportHeight/2+150);
-        font.draw(batch, "Mover canasta: Flechas izquierda y derecha", 100, camera.viewportHeight/2+100);
-        font.draw(batch, "Pausar juego: Tecla ESC", 100, camera.viewportHeight/2+50);
-        font.draw(batch, "Reanudar juego: Tecla ESC", 100, camera.viewportHeight/2);
-        font.draw(batch, "Las bombas te quitan vidas", 100, camera.viewportHeight/2-50);
-        font.draw(batch, "Las frutas te dan puntos", 100, camera.viewportHeight/2-100);
+        font.draw(batch, "Como jugar", 100, camera.viewportHeight/2+200);
+        font.draw(batch, "Controles", 100, 160+135);
+        tutorialFlecha.dibujarComponente();
+        tutorialEscape.dibujarComponente();
         batch.end();
         botonRegresar.dibujarComponente();
     }
