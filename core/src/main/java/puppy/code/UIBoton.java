@@ -1,8 +1,10 @@
 package puppy.code;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -17,6 +19,7 @@ public class UIBoton implements UI {
     private final BitmapFont fontJuego;
     private final ClickListener clickListener;
     private final String textoBoton;
+    private final Sound sound;
 
     public UIBoton(Stage stage, float posX, float posY, BitmapFont fontJuego, String textoBoton, ClickListener clickListener) {
         this.posX = posX;
@@ -25,7 +28,12 @@ public class UIBoton implements UI {
         this.textoBoton = textoBoton;
         this.clickListener = clickListener;
         this.stage = stage;
+        this.sound = Gdx.audio.newSound(Gdx.files.internal("buttonSound.wav"));
         Gdx.input.setInputProcessor(stage);
+    }
+
+    public void reproducirSonido() {
+        sound.play(0.05f);
     }
 
     @Override
@@ -40,7 +48,13 @@ public class UIBoton implements UI {
         TextButton boton = new TextButton(textoBoton, textButtonStyle);
         boton.setSize(200, 50);
         boton.setPosition(posX, posY);
-        boton.addListener(clickListener);
+        boton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                reproducirSonido();
+                clickListener.clicked(event, x, y);
+            }
+        });
         stage.addActor(boton);
 
     }

@@ -32,9 +32,9 @@ public class ImgText implements UI{
 
     @Override
     public void crearComponente() {
-        GlyphLayout layout = new GlyphLayout(font, texto);
+        GlyphLayout layout = new GlyphLayout(font,texto);
         posXImg = posXText + (int) layout.width + distancia;
-        posYImg = posYText - alto / 2;
+        posYImg = posYText - (int) (layout.height/2)-(alto/2);
     }
 
     @Override

@@ -26,31 +26,29 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
         this.font = game.getFont();
 		  // load the images for the droplet and the bucket, 64x64 pixels each
-		  Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-		  canasta = new Canasta(new Texture(Gdx.files.internal("canasta.png")),explosion);
+        Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
+        canasta = new Canasta(new Texture(Gdx.files.internal("canasta.png")),explosion);
+        // load the drop sound effect and the rain background "music"
+        Texture fruta = new Texture(Gdx.files.internal("Fruta.png"));
+        Texture bomba = new Texture(Gdx.files.internal("Bomba.png"));
+        Texture vidaExtra = new Texture(Gdx.files.internal("corazon.png"));
+        Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+        Sound sonidoVida = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
 
-	      // load the drop sound effect and the rain background "music"
-         Texture fruta = new Texture(Gdx.files.internal("Fruta.png"));
-         Texture bomba = new Texture(Gdx.files.internal("Bomba.png"));
-         Texture vidaExtra = new Texture(Gdx.files.internal("corazon.png"));
+        Music musicaDeFondo = Gdx.audio.newMusic(Gdx.files.internal("Music.mp3"));
+        proyectil = new Proyectil(fruta, bomba, vidaExtra,dropSound, musicaDeFondo,sonidoVida);
 
-         Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-         Sound sonidoVida = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
+        fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
 
-	     Music musicaDeFondo = Gdx.audio.newMusic(Gdx.files.internal("pou.mp3"));
-         proyectil = new Proyectil(fruta, bomba, vidaExtra,dropSound, musicaDeFondo,sonidoVida);
+        // camera
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 480);
+        batch = new SpriteBatch();
+        //creacion del tarro
+        canasta.crear();
 
-         fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
-
-	      // camera
-	      camera = new OrthographicCamera();
-	      camera.setToOrtho(false, 800, 480);
-	      batch = new SpriteBatch();
-	      // creacion del tarro
-	      canasta.crear();
-
-	      // creacion de la proyectil
-	      proyectil.crear();
+        //creacion de la proyectil
+        proyectil.crear();
 	}
 	@Override
 	public void render(float delta) {
@@ -64,7 +62,7 @@ public class GameScreen implements Screen {
 		batch.begin();
         batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
 		//dibujar textos
-		font.draw(batch, "Frutas totales: " + canasta.getPuntos(), 5, 475);
+		font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
 		font.draw(batch, "Vidas : " + canasta.getVidas(), 670, 475);
 		font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
 

@@ -2,6 +2,7 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,8 +21,8 @@ public class TutorialScreen implements Screen{
     private OrthographicCamera camera;
     private UIBoton botonRegresar;
     private Stage stage;
-    private Texture flechas, escape;
-    private ImgText tutorialFlecha, tutorialEscape;
+    private Texture flechas, escape,puntos,danio,vida;
+    private ImgText tutorialFlecha, tutorialEscape, tutorialPuntos, tutorialDanio, tutorialVida;
     //private Texture fondo;
 
     public TutorialScreen(final GameLluviaMenu game) {
@@ -41,14 +42,31 @@ public class TutorialScreen implements Screen{
             }
         });
         botonRegresar.crearComponente();
+        iniciarTutorial();
 
-        flechas = new Texture(Gdx.files.internal("flechas.png"));
-        tutorialFlecha = new ImgText(font, batch, flechas, "Desplazarse con las flechas", 100, 160, 190, 100,10);
+
+    }
+
+
+    private void iniciarTutorial(){
         escape = new Texture(Gdx.files.internal("escape.png"));
-        tutorialEscape = new ImgText(font, batch, escape, "Para pausar el juego con Escape", 100, 250, 100, 80,40);
-        //escape = new Texture(Gdx.files.internal("escape.png"));
-        //fondo = new Texture("fondo.png");
+        tutorialEscape = new ImgText(font, batch, escape, "Para pausar el juego con Escape", 100, 170, 50, 35,25);
+        flechas = new Texture(Gdx.files.internal("flechas.png"));
+        tutorialFlecha = new ImgText(font, batch, flechas, "Desplazarse con las flechas", 100, 130, 130, 50,10);
+        puntos = new Texture(Gdx.files.internal("Fruta.png"));
+        tutorialPuntos = new ImgText(font, batch, puntos, "Este objeto da puntos:", 100, 340, 30, 30,10);
+        danio = new Texture(Gdx.files.internal("Bomba.png"));
+        tutorialDanio = new ImgText(font, batch, danio, "Este objeto quita vida:", 100, 300, 30, 30,17);
+        vida = new Texture(Gdx.files.internal("corazon.png"));
+        tutorialVida = new ImgText(font, batch, vida, "Este objeto da vida:", 100, 260, 30, 30,42);
+    }
 
+    private void dibujarTutorial(){
+        tutorialEscape.dibujarComponente();
+        tutorialFlecha.dibujarComponente();
+        tutorialPuntos.dibujarComponente();
+        tutorialDanio.dibujarComponente();
+        tutorialVida.dibujarComponente();
     }
 
     @Override
@@ -58,10 +76,19 @@ public class TutorialScreen implements Screen{
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+
+        BitmapFont.BitmapFontData fontData = font.getData();
+        float ogScaleX = fontData.scaleX;
+        float ogScaleY = fontData.scaleY;
+
+        font.getData().setScale(3.0f);
         font.draw(batch, "Como jugar", 100, camera.viewportHeight/2+200);
-        font.draw(batch, "Controles", 100, 160+135);
-        tutorialFlecha.dibujarComponente();
-        tutorialEscape.dibujarComponente();
+        font.getData().setScale(ogScaleX, ogScaleY);
+        font.draw(batch, "Obten la mayor cantidad de puntos posibles!", 100, 380);
+        font.getData().setScale(3.0f);
+        font.draw(batch, "Controles", 100, 220);
+        font.getData().setScale(ogScaleX, ogScaleY);
+        dibujarTutorial();
         batch.end();
         botonRegresar.dibujarComponente();
     }
