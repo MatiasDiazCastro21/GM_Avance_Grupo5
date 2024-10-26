@@ -4,15 +4,14 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Bomba extends ProyectilAbs {
-    public Bomba(Texture textura, Sound sonido) {
+public class VidaExtra extends ProyectilAbs {
+    public VidaExtra(Texture textura, Sound sonido) {
         super(textura, sonido);
     }
+
     @Override
     public void interactuarConCanasta(Canasta canasta) {
-        canasta.dañar();
-
+        canasta.sumarVida();
+        sonido.play(0.025f);
     }
-
-
 }
