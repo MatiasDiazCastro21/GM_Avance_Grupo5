@@ -2,7 +2,6 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,18 +13,18 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
-public class TutorialScreen implements Screen{
+public class TutorialControlScreen implements Screen{
     final GameLluviaMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
-    private UIBoton botonRegresar;
+    private UIBoton botonRegresar, botonObjeto;
     private Stage stage;
-    private Texture flechas, escape,puntos,danio,vida;
-    private ImgText tutorialFlecha, tutorialEscape, tutorialPuntos, tutorialDanio, tutorialVida;
+    private Texture flechas, escape,aAndD,shift,espacio;
+    private ImgText tutorialFlecha, tutorialEscape, tutorialAAndD, tutorialShift, tutorialEspacio;
     //private Texture fondo;
 
-    public TutorialScreen(final GameLluviaMenu game) {
+    public TutorialControlScreen(final GameLluviaMenu game) {
         this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
@@ -42,6 +41,15 @@ public class TutorialScreen implements Screen{
             }
         });
         botonRegresar.crearComponente();
+
+        botonObjeto = new UIBoton(stage,350,camera.viewportHeight/2-200,font,"Objetos",new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new TutorialObjetoScreen(game));
+                dispose();
+            }
+        });
+        botonObjeto.crearComponente();
         iniciarTutorial();
 
 
@@ -50,23 +58,25 @@ public class TutorialScreen implements Screen{
 
     private void iniciarTutorial(){
         escape = new Texture(Gdx.files.internal("escape.png"));
-        tutorialEscape = new ImgText(font, batch, escape, "Para pausar el juego con Escape", 100, 170, 50, 35,25);
+        tutorialEscape = new ImgText(font, batch, escape, "Para pausar el juego con Escape", 100, 340, 50, 35,25);
         flechas = new Texture(Gdx.files.internal("flechas.png"));
-        tutorialFlecha = new ImgText(font, batch, flechas, "Desplazarse con las flechas", 100, 130, 130, 50,10);
-        puntos = new Texture(Gdx.files.internal("manzana.png"));
-        tutorialPuntos = new ImgText(font, batch, puntos, "Este objeto da puntos:", 100, 340, 30, 30,10);
-        danio = new Texture(Gdx.files.internal("Bomba.png"));
-        tutorialDanio = new ImgText(font, batch, danio, "Este objeto quita vida:", 100, 300, 30, 30,17);
-        vida = new Texture(Gdx.files.internal("corazon.png"));
-        tutorialVida = new ImgText(font, batch, vida, "Este objeto da vida:", 100, 260, 30, 30,42);
+        tutorialFlecha = new ImgText(font, batch, flechas, "Desplazarse con las flechas", 100, 290, 130, 50,10);
+        aAndD = new Texture(Gdx.files.internal("AyD.png"));
+        tutorialAAndD = new ImgText(font, batch, aAndD, "Desplazarse con las teclas A y D", 100, 240, 130, 50,10);
+        shift = new Texture(Gdx.files.internal("shift.png"));
+        tutorialShift = new ImgText(font, batch, shift, "Dash con la tecla Shift", 100, 190, 80, 50,25);
+        espacio = new Texture(Gdx.files.internal("espacio.png"));
+        tutorialEspacio = new ImgText(font, batch, espacio, "Ir más rápido con la tecla Espacio", 100, 140, 80, 50,25);
+
     }
 
     private void dibujarTutorial(){
         tutorialEscape.dibujarComponente();
         tutorialFlecha.dibujarComponente();
-        tutorialPuntos.dibujarComponente();
-        tutorialDanio.dibujarComponente();
-        tutorialVida.dibujarComponente();
+        tutorialAAndD.dibujarComponente();
+        tutorialShift.dibujarComponente();
+        tutorialEspacio.dibujarComponente();
+
     }
 
     @Override
@@ -82,15 +92,12 @@ public class TutorialScreen implements Screen{
         float ogScaleY = fontData.scaleY;
 
         font.getData().setScale(3.0f);
-        font.draw(batch, "Como jugar", 100, camera.viewportHeight/2+200);
-        font.getData().setScale(ogScaleX, ogScaleY);
-        font.draw(batch, "Obten la mayor cantidad de puntos posibles!", 100, 380);
-        font.getData().setScale(3.0f);
-        font.draw(batch, "Controles", 100, 220);
+        font.draw(batch, "Controles", 100, camera.viewportHeight/2+200);
         font.getData().setScale(ogScaleX, ogScaleY);
         dibujarTutorial();
         batch.end();
         botonRegresar.dibujarComponente();
+        botonObjeto.dibujarComponente();
     }
 
     @Override

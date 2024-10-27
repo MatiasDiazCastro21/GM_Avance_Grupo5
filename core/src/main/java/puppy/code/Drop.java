@@ -16,12 +16,13 @@ public class Drop{
     private Texture vidaExtra;
     private Texture manzanaOro;
     private Texture calavera;
+    private Texture dashTexture;
     private Sound vidaSound;
     private Sound puntosSound;
     private Sound scoreExtraSound;
     private Sound explosion;
 
-    public Drop(Texture manzana,Texture manzanaOro, Texture bomba, Texture vidaExtra,Texture calavera, Sound puntosSound, Sound vidaSound,Sound scoreExtraSound,Sound explosion) {
+    public Drop(Texture manzana,Texture manzanaOro, Texture bomba, Texture vidaExtra,Texture calavera,Texture dashTexture, Sound puntosSound, Sound vidaSound,Sound scoreExtraSound,Sound explosion) {
         this.puntosSound = puntosSound;
         this.vidaSound = vidaSound;
         this.manzana = manzana;
@@ -31,6 +32,7 @@ public class Drop{
         this.vidaExtra = vidaExtra;
         this.scoreExtraSound = scoreExtraSound;
         this.explosion = explosion;
+        this.dashTexture = dashTexture;
     }
 
     public void crearConCanasta(Canasta c) {
@@ -81,7 +83,7 @@ public class Drop{
         }
         else if (random < 75)
         {
-            drops.add(new Dash(new Texture(Gdx.files.internal("Dash.png")),explosion));
+            drops.add(new Dash(dashTexture,explosion));
         }
         else {
             drops.add(new Calavera(calavera, scoreExtraSound));

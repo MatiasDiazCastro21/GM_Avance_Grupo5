@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -27,11 +26,13 @@ public class Canasta {
        private boolean tieneDash = false;
        private static final float DASH_DISTANCE = 250;
        private int direccion;
+       private Sound sonidoDash;
 
 
 	   public Canasta(Texture tex, Sound ss) {
 		   bucketImage = tex;
 		   sonidoHerido = ss;
+           sonidoDash = Gdx.audio.newSound(Gdx.files.internal("dashSound.mp3"));
 	   }
 
 		public int getVidas() {
@@ -94,7 +95,6 @@ public class Canasta {
                 else{
                     bucket.x -= velx * Gdx.graphics.getDeltaTime();
                 }
-
            }
            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)){
                direccion = 1;
@@ -146,6 +146,7 @@ public class Canasta {
         if (cargarDash > 0) { //Usar solo si hay cargas disponibles
 
             if (direccion != 0) { // Solo ejecutar el dash si hay dirección
+                sonidoDash.play(0.05f);
                 bucket.x += DASH_DISTANCE * direccion;
 
                 //Limitar dentro de los bordes

@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 			font = new BitmapFont(); // use libGDX's default Arial font
             music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
             music.setLooping(true);
-            music.setVolume(0.05f);
+            music.setVolume(0.025f);
 			this.setScreen(new MainMenuScreen(this));
 		}
 

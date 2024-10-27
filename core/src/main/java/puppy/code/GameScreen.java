@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
         //creacion de "jugador"
         canasta.crear();
 
-        //creacion de drop y inicio de musica
+        //creacion de drop
         drop.crearConCanasta(canasta);
         music.play();
 
@@ -57,6 +57,7 @@ public class GameScreen implements Screen {
         Texture vidaExtra = new Texture(Gdx.files.internal("corazon.png"));
         Texture scoreExtra = new Texture(Gdx.files.internal("ManzanaOro.png"));
         Texture calavera = new Texture(Gdx.files.internal("calavera.png"));
+        Texture dashTexture = new Texture(Gdx.files.internal("dash.png"));
 
         Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
         Sound sonidoVida = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
@@ -66,7 +67,7 @@ public class GameScreen implements Screen {
         fondoCalavera = new Texture(Gdx.files.internal("FondoCalavera.png"));
         music = Gdx.audio.newMusic(Gdx.files.internal("Music.mp3"));
         musicCalaca = Gdx.audio.newMusic(Gdx.files.internal("MusicaCalavera.mp3"));
-        drop = new Drop(score,scoreExtra, bomba, vidaExtra,calavera,dropSound,sonidoVida,scoreExtraSound,explosion);
+        drop = new Drop(score,scoreExtra, bomba, vidaExtra,calavera,dashTexture,dropSound,sonidoVida,scoreExtraSound,explosion);
     }
 
 	@Override

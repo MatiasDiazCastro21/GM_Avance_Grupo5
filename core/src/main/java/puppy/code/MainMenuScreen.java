@@ -2,7 +2,6 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -52,7 +51,7 @@ public class MainMenuScreen implements Screen {
         botonTutorial = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Tutorial",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TutorialScreen(game));
+                game.setScreen(new TutorialControlScreen(game));
                 dispose();
             }
         });
