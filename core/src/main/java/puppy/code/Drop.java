@@ -8,53 +8,93 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Drop extends Create {
+public class Drop{
     private Array<ProyectilAbs> drops;
     private long lastDropTime;
     private Texture manzana;
     private Texture bomba;
     private Texture vidaExtra;
     private Texture manzanaOro;
+    private Texture calavera;
     private Sound vidaSound;
-    private Sound dropSound;
+    private Sound puntosSound;
+    private Sound scoreExtraSound;
+    private Sound explosion;
 
-    public Drop(Texture manzana,Texture manzanaOro, Texture bomba, Texture vidaExtra, Sound ss, Sound vidaSound) {
-        dropSound = ss;
+    public Drop(Texture manzana,Texture manzanaOro, Texture bomba, Texture vidaExtra,Texture calavera, Sound puntosSound, Sound vidaSound,Sound scoreExtraSound,Sound explosion) {
+        this.puntosSound = puntosSound;
         this.vidaSound = vidaSound;
         this.manzana = manzana;
         this.manzanaOro = manzanaOro;
+        this.calavera = calavera;
         this.bomba = bomba;
         this.vidaExtra = vidaExtra;
+        this.scoreExtraSound = scoreExtraSound;
+        this.explosion = explosion;
     }
 
-    @Override
-    public void crear() {
+    public void crearConCanasta(Canasta c) {
         drops = new Array<>();
-        crearDrop();
+        crearDrop(c);
     }
 
-    private void crearDrop() {
+    private void crearDrop(Canasta canasta) {
         int random = MathUtils.random(1, 100);
-        if (random < 70) {
-            drops.add(new Manzana(manzana, dropSound));
-        } else if (random < 99) {
-            drops.add(new Bomba(bomba, dropSound));
-        } else {
-            random = MathUtils.random(1,10);
-            if(random < 5)
-            {
-                drops.add(new VidaExtra( vidaExtra, vidaSound));
+
+        if(canasta.efectoCalavera())
+        {
+            if (random < 40) {
+                drops.add(new Manzana(manzana, puntosSound));
+
+            } else if (random < 99) {
+                drops.add(new Bomba(bomba, explosion));
+
             }
             else{
-                drops.add(new ScoreExtra(manzanaOro,vidaSound));
+                objetoEspecial();
             }
         }
+        else {
+            if (random < 65) {
+                drops.add(new Manzana(manzana, puntosSound));
 
+            } else if (random < 98) {
+                drops.add(new Bomba(bomba, explosion));
+            }
+            else{
+                objetoEspecial();
+            }
+
+        }
         lastDropTime = TimeUtils.nanoTime();
+
+
+    }
+
+    private void objetoEspecial(){
+        int random = MathUtils.random(1, 100);
+        if (random < 25) {
+            drops.add(new VidaExtra(vidaExtra, vidaSound));
+
+        } else if (random < 50) {
+            drops.add(new ScoreExtra(manzanaOro, scoreExtraSound));
+        }
+        else if (random < 75)
+        {
+            drops.add(new Dash(new Texture(Gdx.files.internal("Dash.png")),explosion));
+        }
+        else {
+            drops.add(new Calavera(calavera, scoreExtraSound));
+
+        }
     }
 
     public boolean actualizarMovimiento(Canasta canasta) {
-        if (TimeUtils.nanoTime() - lastDropTime > 100000000) crearDrop();
+        if (TimeUtils.nanoTime() - lastDropTime > 100000000) crearDrop(canasta);
+
+        if (!canasta.efectoCalavera()) {
+            canasta.desactivarEfectoCalavera();
+        }
 
         for (int i = 0; i < drops.size; i++) {
             ProyectilAbs drop = drops.get(i);
@@ -73,7 +113,6 @@ public class Drop extends Create {
         return true;
     }
 
-    @Override
     public void dibujar(SpriteBatch batch) {
         for (ProyectilAbs drop : drops) {
             batch.draw(drop.textura, drop.hitBox.x, drop.hitBox.y);
@@ -81,13 +120,9 @@ public class Drop extends Create {
     }
 
     public void destruir() {
-        dropSound.dispose();
+        puntosSound.dispose();
     }
 
-    public void pausar() {}
 
-    public void continuar() {}
 
-    @Override
-    public void actualizar() {}
 }

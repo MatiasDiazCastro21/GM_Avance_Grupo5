@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
 	final GameLluviaMenu game;
@@ -19,7 +20,9 @@ public class GameScreen implements Screen {
 	private Canasta canasta;
 	private Drop drop;
     private Texture fondo;
+    private Texture fondoCalavera;
     private Music music;
+    private Music musicCalaca;
 
 	//boolean activo = true;
 	public GameScreen(final GameLluviaMenu game) {
@@ -29,6 +32,8 @@ public class GameScreen implements Screen {
         cargarAssets();
         music.setLooping(true);
         music.setVolume(0.05f);
+        musicCalaca.setLooping(true);
+        musicCalaca.setVolume(0.05f);
         //camara
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -37,24 +42,31 @@ public class GameScreen implements Screen {
         canasta.crear();
 
         //creacion de drop y inicio de musica
-        drop.crear();
+        drop.crearConCanasta(canasta);
         music.play();
 
 
 	}
 
     private void cargarAssets(){
-        Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-        canasta = new Canasta(new Texture(Gdx.files.internal("canasta.png")),explosion);
+        Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurtSound.mp3"));
+        canasta = new Canasta(new Texture(Gdx.files.internal("canasta.png")),hurtSound);
+
         Texture score = new Texture(Gdx.files.internal("Manzana.png"));
         Texture bomba = new Texture(Gdx.files.internal("Bomba.png"));
         Texture vidaExtra = new Texture(Gdx.files.internal("corazon.png"));
         Texture scoreExtra = new Texture(Gdx.files.internal("ManzanaOro.png"));
+        Texture calavera = new Texture(Gdx.files.internal("calavera.png"));
+
         Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
         Sound sonidoVida = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
+        Sound scoreExtraSound = Gdx.audio.newSound(Gdx.files.internal("scoreExtra.mp3"));
+        Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
         fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
+        fondoCalavera = new Texture(Gdx.files.internal("FondoCalavera.png"));
         music = Gdx.audio.newMusic(Gdx.files.internal("Music.mp3"));
-        drop = new Drop(score,scoreExtra, bomba, vidaExtra,dropSound,sonidoVida);
+        musicCalaca = Gdx.audio.newMusic(Gdx.files.internal("MusicaCalavera.mp3"));
+        drop = new Drop(score,scoreExtra, bomba, vidaExtra,calavera,dropSound,sonidoVida,scoreExtraSound,explosion);
     }
 
 	@Override
@@ -66,15 +78,33 @@ public class GameScreen implements Screen {
 		//actualizar
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-        batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
 		//dibujar textos
-		font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
-		font.draw(batch, "Vidas : " + canasta.getVidas(), 670, 475);
-		font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
+
+
+        if (canasta.efectoCalavera()) {
+            music.pause();
+            if (!musicCalaca.isPlaying()) {
+                musicCalaca.play();
+            }
+            batch.draw(fondoCalavera, 0, 0, camera.viewportWidth, camera.viewportHeight);
+            long tiempoRestante = 10 - (TimeUtils.nanoTime() - canasta.getTiempoCalavera()) / 1_000_000_000L;
+            font.draw(batch, "Efecto Calavera: " + tiempoRestante + "s", camera.viewportWidth/2-105, 400);
+        }
+
+
+        else{
+            batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
+            musicCalaca.stop();
+        }
+
+        font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
+        font.draw(batch, "Vidas : " + canasta.getVidas(), 670, 475);
+        font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
+        font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
 
 
 		if (!canasta.estaHerido()) {
-            if (!music.isPlaying()) {
+            if (!music.isPlaying() && !canasta.efectoCalavera()) {
                 music.play();
             }
 			// movimiento del tarro desde teclado
@@ -86,6 +116,7 @@ public class GameScreen implements Screen {
 	    		  game.setHigherScore(canasta.getPuntos());
 	    	  //ir a la ventana de finde juego y destruir la actual
               music.stop();
+              musicCalaca.stop();
 	    	  game.setScreen(new GameOverScreen(game));
 	    	  dispose();
 	       }
@@ -103,6 +134,8 @@ public class GameScreen implements Screen {
 
 	}
 
+
+
 	@Override
 	public void resize(int width, int height) {
 	}
@@ -110,7 +143,6 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 	  // continuar con sonido de drop
-	  drop.continuar();
       music.play();
 	}
 
@@ -121,8 +153,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		drop.pausar();
         music.pause();
+        musicCalaca.pause();
 		game.setScreen(new PausaScreen(game, this));
 	}
 

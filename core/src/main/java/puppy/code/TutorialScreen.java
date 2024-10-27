@@ -53,7 +53,7 @@ public class TutorialScreen implements Screen{
         tutorialEscape = new ImgText(font, batch, escape, "Para pausar el juego con Escape", 100, 170, 50, 35,25);
         flechas = new Texture(Gdx.files.internal("flechas.png"));
         tutorialFlecha = new ImgText(font, batch, flechas, "Desplazarse con las flechas", 100, 130, 130, 50,10);
-        puntos = new Texture(Gdx.files.internal("Fruta.png"));
+        puntos = new Texture(Gdx.files.internal("manzana.png"));
         tutorialPuntos = new ImgText(font, batch, puntos, "Este objeto da puntos:", 100, 340, 30, 30,10);
         danio = new Texture(Gdx.files.internal("Bomba.png"));
         tutorialDanio = new ImgText(font, batch, danio, "Este objeto quita vida:", 100, 300, 30, 30,17);
@@ -95,7 +95,7 @@ public class TutorialScreen implements Screen{
 
     @Override
     public void show() {
-        //TODO
+        game.getMusic().play();
     }
 
     @Override

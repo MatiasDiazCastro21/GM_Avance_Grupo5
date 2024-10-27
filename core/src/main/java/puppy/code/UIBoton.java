@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -38,21 +39,23 @@ public class UIBoton implements UI {
 
     @Override
     public void crearComponente() {
-        Drawable upDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("button-up.jpg")));
-        Drawable downDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("button-down.jpg")));
+        Drawable upDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("button-up.png")));
+        Drawable downDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("button-down.png")));
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = upDrawable;
         textButtonStyle.down = downDrawable;
         textButtonStyle.font = this.fontJuego;
         TextButton boton = new TextButton(textoBoton, textButtonStyle);
-        boton.setSize(200, 50);
+        boton.setSize(205, 55);
         boton.setPosition(posX, posY);
         boton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 reproducirSonido();
                 clickListener.clicked(event, x, y);
+                boton.setDisabled(true);
+                boton.setTouchable(Touchable.disabled);
             }
         });
         stage.addActor(boton);

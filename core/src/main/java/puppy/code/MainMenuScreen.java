@@ -2,6 +2,7 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -41,6 +42,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new GameScreen(game));
+                game.getMusic().stop();
                 dispose();
             }
         });
@@ -73,12 +75,11 @@ public class MainMenuScreen implements Screen {
 
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-
 		batch.begin();
-        font.getData().setScale(2, 2);
         batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
-		font.draw(batch, "Bienvenido a Recolecta Fruta!!! ", 100, camera.viewportHeight/2+150);
-
+        font.getData().setScale(3, 3);
+		font.draw(batch, "Fruit Drop ", 100, camera.viewportHeight/2+150);
+        font.getData().setScale(2, 2);
 		batch.end();
 
         botonSalir.dibujarComponente();
@@ -89,7 +90,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		game.getMusic().play();
 
 	}
 
@@ -118,8 +119,6 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

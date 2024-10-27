@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.TimeUtils;
 
-public class Canasta extends Create{
+public class Canasta {
 	   private Rectangle bucket;
 	   private Texture bucketImage;
 	   private Sound sonidoHerido;
@@ -19,6 +20,13 @@ public class Canasta extends Create{
 	   private boolean herido = false;
 	   private int tiempoHeridoMax=50;
 	   private int tiempoHerido;
+       private boolean efectoCalavera = false;
+       private long tiempoCalavera;
+       private int cargarDash = 3;
+       private static final int MAX_CARGAS_DASH = 3;
+       private boolean tieneDash = false;
+       private static final float DASH_DISTANCE = 250;
+       private int direccion;
 
 
 	   public Canasta(Texture tex, Sound ss) {
@@ -63,30 +71,46 @@ public class Canasta extends Create{
 
        }
 
-       @Override
+
 	   public void dibujar(SpriteBatch batch) {
 		 if (!herido) {
              batch.draw(bucketImage, bucket.x, bucket.y);
          }
 		 else {
+             direccion = 0;
              batch.draw(bucketImage, bucket.x, bucket.y+ MathUtils.random(-5,5));
 
 		   tiempoHerido--;
 		   if (tiempoHerido<=0) herido = false;
 		 }
 	   }
-	   @Override
+
        public void actualizar() {
-		   // movimiento desde mouse/touch
-		   /*if(Gdx.input.isTouched()) {
-			      Vector3 touchPos = new Vector3();
-			      touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			      camera.unproject(touchPos);
-			      bucket.x = touchPos.x - 64 / 2;
-			}*/
-		   //movimiento desde teclado
-		   if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) bucket.x -= velx * Gdx.graphics.getDeltaTime();
-		   if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) bucket.x += velx * Gdx.graphics.getDeltaTime();
+           if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)){
+               direccion = -1;
+                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                     bucket.x -= velx * Gdx.graphics.getDeltaTime()*2;
+                }
+                else{
+                    bucket.x -= velx * Gdx.graphics.getDeltaTime();
+                }
+
+           }
+           if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)){
+               direccion = 1;
+               if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                   bucket.x += velx * Gdx.graphics.getDeltaTime()*2;
+               }
+               else{
+                   bucket.x += velx * Gdx.graphics.getDeltaTime();
+               }
+
+           }
+
+           if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
+               dash(); // Usar dash cuando Shift es presionado
+           }
+
 		   // que no se salga de los bordes izq y der
 		   if(bucket.x < 0) bucket.x = 0;
 		   if(bucket.x > 800 - 64) bucket.x = 800 - bucket.width;
@@ -100,5 +124,56 @@ public class Canasta extends Create{
        public boolean estaHerido() {
 	        return herido;
        }
+
+    public void activarEfectoCalavera(long tiempoInicio) {
+        this.efectoCalavera = true;
+        this.tiempoCalavera = tiempoInicio;
+    }
+
+    public boolean efectoCalavera() {
+        return efectoCalavera && TimeUtils.nanoTime() - tiempoCalavera < 10_000_000_000L;
+    }
+
+    public void desactivarEfectoCalavera() {
+        this.efectoCalavera = false;
+    }
+
+    public long getTiempoCalavera() {
+        return tiempoCalavera;
+    }
+
+    public void dash() {
+        if (cargarDash > 0) { //Usar solo si hay cargas disponibles
+
+            if (direccion != 0) { // Solo ejecutar el dash si hay dirección
+                bucket.x += DASH_DISTANCE * direccion;
+
+                //Limitar dentro de los bordes
+                if(bucket.x < 0) bucket.x = 0;
+                if(bucket.x > 800 - bucket.width) bucket.x = 800 - bucket.width;
+
+                //Consumir una carga de dash
+                cargarDash--;
+                if (cargarDash == 0) {
+                    tieneDash = false; // Desactivar si se agotaron las cargas
+                }
+            }
+        }
+    }
+
+    public void obtenerDash() {
+        if (cargarDash < MAX_CARGAS_DASH) {
+            cargarDash++;
+            tieneDash = true;
+        }
+    }
+
+    public int getCargasDash() {
+        return cargarDash;
+    }
+
+    public int getMaxCargasDash() {
+        return MAX_CARGAS_DASH;
+    }
 
 }

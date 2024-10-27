@@ -2,6 +2,7 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,6 +22,7 @@ public class GameOverScreen implements Screen {
     private UIBoton botonSalir;
     private Stage stage;
     private Texture fondo;
+    private Music musicGameOver;
 
 	public GameOverScreen(final GameLluviaMenu game) {
 		this.game = game;
@@ -31,11 +33,15 @@ public class GameOverScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         fondo = new Texture(Gdx.files.internal("fondo.png"));
+        musicGameOver = Gdx.audio.newMusic(Gdx.files.internal("GameOver.mp3"));
+        musicGameOver.setVolume(0.05f);
+
 
         botonReiniciar = new UIBoton(stage,100,camera.viewportHeight/2-50,font,"Reiniciar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new GameScreen(game));
+                musicGameOver.stop();
                 dispose();
             }
         });
@@ -45,6 +51,7 @@ public class GameOverScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MainMenuScreen(game));
+                musicGameOver.stop();
             }
         });
         botonSalir.crearComponente();
@@ -68,7 +75,7 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		musicGameOver.play();
 
 	}
 
@@ -98,7 +105,9 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+        musicGameOver.dispose();
+        fondo.dispose();
+        stage.dispose();
 
 	}
 
