@@ -91,6 +91,7 @@ public class TutorialObjetoScreen implements Screen {
         float ogScaleX = fontData.scaleX;
         float ogScaleY = fontData.scaleY;
         font.getData().setScale(3.0f);
+        batch.draw(game.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         font.draw(batch, "Como jugar", 100, camera.viewportHeight/2+200);
         font.getData().setScale(2.0f, 2.0f);
         font.draw(batch, "Obten la mayor cantidad de puntos posibles!", 100, 380);

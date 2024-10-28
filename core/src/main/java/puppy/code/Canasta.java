@@ -24,7 +24,7 @@ public class Canasta {
        private int cargarDash = 3;
        private static final int MAX_CARGAS_DASH = 3;
        private boolean tieneDash = false;
-       private static final float DASH_DISTANCE = 250;
+       private static final float DASH_DISTANCE = 190;
        private int direccion;
        private Sound sonidoDash;
 
@@ -59,31 +59,30 @@ public class Canasta {
 	   }
 
 	   public void dañar() {
-		  vidas--;
-		  herido = true;
-		  tiempoHerido=tiempoHeridoMax;
-		  sonidoHerido.play(0.05f);
+           vidas--;
+           herido = true;
+           tiempoHerido=tiempoHeridoMax;
+           sonidoHerido.play(0.05f);
 	   }
 
-       public void sumarVida()
-       {
+       public void sumarVida() {
            vidas++;
            tiempoHerido=tiempoHeridoMax;
-
        }
 
 
 	   public void dibujar(SpriteBatch batch) {
-		 if (!herido) {
-             batch.draw(bucketImage, bucket.x, bucket.y);
-         }
-		 else {
-             direccion = 0;
-             batch.draw(bucketImage, bucket.x, bucket.y+ MathUtils.random(-5,5));
-
-		   tiempoHerido--;
-		   if (tiempoHerido<=0) herido = false;
-		 }
+           if (!herido){
+               batch.draw(bucketImage, bucket.x, bucket.y);
+           }
+           else {
+               direccion = 0;
+               batch.draw(bucketImage, bucket.x, bucket.y+ MathUtils.random(-5,5));
+               tiempoHerido--;
+               if (tiempoHerido<=0){
+                   herido = false;
+               }
+           }
 	   }
 
        public void actualizar() {
@@ -91,6 +90,9 @@ public class Canasta {
                direccion = -1;
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
                      bucket.x -= velx * Gdx.graphics.getDeltaTime()*2;
+                }
+                else if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
+                    dash(); // Usar dash cuando Shift es presionado
                 }
                 else{
                     bucket.x -= velx * Gdx.graphics.getDeltaTime();
@@ -101,15 +103,15 @@ public class Canasta {
                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
                    bucket.x += velx * Gdx.graphics.getDeltaTime()*2;
                }
+               else if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
+                   dash(); // Usar dash cuando Shift es presionado
+               }
                else{
                    bucket.x += velx * Gdx.graphics.getDeltaTime();
                }
 
            }
 
-           if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
-               dash(); // Usar dash cuando Shift es presionado
-           }
 
 		   // que no se salga de los bordes izq y der
 		   if(bucket.x < 0) bucket.x = 0;
@@ -145,16 +147,25 @@ public class Canasta {
     public void dash() {
         if (cargarDash > 0) { //Usar solo si hay cargas disponibles
 
-            if (direccion != 0) { // Solo ejecutar el dash si hay dirección
-                sonidoDash.play(0.05f);
-                bucket.x += DASH_DISTANCE * direccion;
+            if (direccion != 0) {
+                if (bucket.x <= 0 && direccion == -1){
+                    bucket.x = 0;
+                }
+                else if((bucket.x >= 800 - bucket.width) && (direccion == 1)) {
+                    bucket.x = 800 - bucket.width;
+                }
+                else{
+                    if (!herido){
+                        bucket.x += DASH_DISTANCE * direccion;
 
-                //Limitar dentro de los bordes
-                if(bucket.x < 0) bucket.x = 0;
-                if(bucket.x > 800 - bucket.width) bucket.x = 800 - bucket.width;
+                        bucket.x = MathUtils.clamp(bucket.x, 0, 800 - bucket.width);
+                        sonidoDash.play(0.05f);
+                        cargarDash--;
+                    }
 
+                }
                 //Consumir una carga de dash
-                cargarDash--;
+
                 if (cargarDash == 0) {
                     tieneDash = false; // Desactivar si se agotaron las cargas
                 }

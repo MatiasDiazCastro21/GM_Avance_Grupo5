@@ -23,7 +23,7 @@ public class MainMenuScreen implements Screen {
     private UIBoton botonSalir;
     private UIBoton botonTutorial;
     private Stage stage;
-    private Texture fondo;
+
 
 
 	public MainMenuScreen(final GameLluviaMenu game) {
@@ -34,7 +34,6 @@ public class MainMenuScreen implements Screen {
 		camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        fondo = new Texture(Gdx.files.internal("fondo.png"));
 
         //Iniciar
         botonIniciar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Empezar juego",new ClickListener(){
@@ -75,7 +74,7 @@ public class MainMenuScreen implements Screen {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-        batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
+        batch.draw(game.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         font.getData().setScale(3, 3);
 		font.draw(batch, "Fruit Drop ", 100, camera.viewportHeight/2+150);
         font.getData().setScale(2, 2);

@@ -21,8 +21,9 @@ public class Drop{
     private Sound puntosSound;
     private Sound scoreExtraSound;
     private Sound explosion;
+    private Sound dashSound;
 
-    public Drop(Texture manzana,Texture manzanaOro, Texture bomba, Texture vidaExtra,Texture calavera,Texture dashTexture, Sound puntosSound, Sound vidaSound,Sound scoreExtraSound,Sound explosion) {
+    public Drop(Texture manzana,Texture manzanaOro, Texture bomba, Texture vidaExtra,Texture calavera,Texture dashTexture, Sound puntosSound, Sound vidaSound,Sound scoreExtraSound,Sound explosion,Sound dashSound) {
         this.puntosSound = puntosSound;
         this.vidaSound = vidaSound;
         this.manzana = manzana;
@@ -33,6 +34,7 @@ public class Drop{
         this.scoreExtraSound = scoreExtraSound;
         this.explosion = explosion;
         this.dashTexture = dashTexture;
+        this.dashSound = dashSound;
     }
 
     public void crearConCanasta(Canasta c) {
@@ -45,19 +47,15 @@ public class Drop{
 
         if(canasta.efectoCalavera())
         {
-            if (random < 40) {
-                drops.add(new Manzana(manzana, puntosSound));
-
-            } else if (random < 99) {
-                drops.add(new Bomba(bomba, explosion));
-
-            }
-            else{
+            if (random < 2) {
                 objetoEspecial();
+            }
+            else if (random < 65){
+                drops.add(new Bomba(bomba, explosion));
             }
         }
         else {
-            if (random < 65) {
+            if (random < 70) {
                 drops.add(new Manzana(manzana, puntosSound));
 
             } else if (random < 98) {
@@ -83,7 +81,7 @@ public class Drop{
         }
         else if (random < 75)
         {
-            drops.add(new Dash(dashTexture,explosion));
+            drops.add(new Dash(dashTexture,dashSound));
         }
         else {
             drops.add(new Calavera(calavera, scoreExtraSound));

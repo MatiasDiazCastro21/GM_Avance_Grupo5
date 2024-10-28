@@ -64,7 +64,7 @@ public class TutorialControlScreen implements Screen{
         aAndD = new Texture(Gdx.files.internal("AyD.png"));
         tutorialAAndD = new ImgText(font, batch, aAndD, "Desplazarse con las teclas A y D", 100, 240, 130, 50,10);
         shift = new Texture(Gdx.files.internal("shift.png"));
-        tutorialShift = new ImgText(font, batch, shift, "Dash con la tecla Shift", 100, 190, 80, 50,25);
+        tutorialShift = new ImgText(font, batch, shift, "Dash con la tecla Shift mientras te mueves", 100, 190, 80, 50,25);
         espacio = new Texture(Gdx.files.internal("espacio.png"));
         tutorialEspacio = new ImgText(font, batch, espacio, "Ir más rápido con la tecla Espacio", 100, 140, 80, 50,25);
 
@@ -92,6 +92,7 @@ public class TutorialControlScreen implements Screen{
         float ogScaleY = fontData.scaleY;
 
         font.getData().setScale(3.0f);
+        batch.draw(game.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         font.draw(batch, "Controles", 100, camera.viewportHeight/2+200);
         font.getData().setScale(ogScaleX, ogScaleY);
         dibujarTutorial();

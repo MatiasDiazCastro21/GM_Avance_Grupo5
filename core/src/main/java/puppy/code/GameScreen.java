@@ -63,11 +63,21 @@ public class GameScreen implements Screen {
         Sound sonidoVida = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
         Sound scoreExtraSound = Gdx.audio.newSound(Gdx.files.internal("scoreExtra.mp3"));
         Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
+        Sound dash = Gdx.audio.newSound(Gdx.files.internal("SonidoDash.mp3"));
         fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
         fondoCalavera = new Texture(Gdx.files.internal("FondoCalavera.png"));
         music = Gdx.audio.newMusic(Gdx.files.internal("Music.mp3"));
         musicCalaca = Gdx.audio.newMusic(Gdx.files.internal("MusicaCalavera.mp3"));
-        drop = new Drop(score,scoreExtra, bomba, vidaExtra,calavera,dashTexture,dropSound,sonidoVida,scoreExtraSound,explosion);
+        drop = new Drop(score,scoreExtra, bomba, vidaExtra,calavera,dashTexture,dropSound,sonidoVida,scoreExtraSound,explosion,dash);
+    }
+
+    private void dibujarComponentes(){
+        canasta.dibujar(batch);
+        drop.dibujar(batch);
+        font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
+        font.draw(batch, "Vidas : " + canasta.getVidas(), 650, 475);
+        font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
+        font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
     }
 
 	@Override
@@ -88,6 +98,7 @@ public class GameScreen implements Screen {
                 musicCalaca.play();
             }
             batch.draw(fondoCalavera, 0, 0, camera.viewportWidth, camera.viewportHeight);
+            dibujarComponentes();
             long tiempoRestante = 10 - (TimeUtils.nanoTime() - canasta.getTiempoCalavera()) / 1_000_000_000L;
             font.draw(batch, "Efecto Calavera: " + tiempoRestante + "s", camera.viewportWidth/2-105, 400);
         }
@@ -95,13 +106,11 @@ public class GameScreen implements Screen {
 
         else{
             batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
+            dibujarComponentes();
             musicCalaca.stop();
         }
 
-        font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
-        font.draw(batch, "Vidas : " + canasta.getVidas(), 670, 475);
-        font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
-        font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
+
 
 
 		if (!canasta.estaHerido()) {
@@ -128,8 +137,7 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pause();
         }
-		canasta.dibujar(batch);
-		drop.dibujar(batch);
+
 
 		batch.end();
 
