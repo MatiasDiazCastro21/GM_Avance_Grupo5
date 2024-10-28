@@ -43,4 +43,69 @@ public class ImgText implements UI{
         font.draw(batch, texto, posXText, posYText);
     }
 
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public int getPosXImg() {
+        return posXImg;
+    }
+
+    public void setPosXImg(int posXImg) {
+        this.posXImg = posXImg;
+    }
+
+    public int getPosYImg() {
+        return posYImg;
+    }
+
+    public void setPosYImg(int posYImg) {
+        this.posYImg = posYImg;
+    }
+
+    public int getPosXText() {
+        return posXText;
+    }
+
+    public void setPosXText(int posXText) {
+        this.posXText = posXText;
+    }
+
+    public int getPosYText() {
+        return posYText;
+    }
+
+    public void setPosYText(int posYText) {
+        this.posYText = posYText;
+    }
+
+    public int getAncho() {
+        return ancho;
+    }
+
+    public void setAncho(int ancho) {
+        this.ancho = ancho;
+    }
+
+    public int getAlto() {
+        return alto;
+    }
+
+    public void setAlto(int alto) {
+        this.alto = alto;
+    }
+
+    public int getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
+    }
+    
+
 }

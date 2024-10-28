@@ -2,7 +2,6 @@ package puppy.code;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 
 public class VidaExtra extends ProyectilAbs {
     public VidaExtra(Texture textura, Sound sonido) {

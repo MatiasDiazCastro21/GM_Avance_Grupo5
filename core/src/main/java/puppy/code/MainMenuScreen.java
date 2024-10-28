@@ -14,24 +14,21 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
 public class MainMenuScreen implements Screen {
-
-	final GameLluviaMenu game;
-	private SpriteBatch batch;
-	private BitmapFont font;
-	private OrthographicCamera camera;
+    final GameLluviaMenu game;
+    private SpriteBatch batch;
+    private BitmapFont font;
+    private OrthographicCamera camera;
     private UIBoton botonIniciar;
     private UIBoton botonSalir;
     private UIBoton botonTutorial;
     private Stage stage;
 
-
-
-	public MainMenuScreen(final GameLluviaMenu game) {
-		this.game = game;
+    public MainMenuScreen(final GameLluviaMenu game) {
+        this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -65,20 +62,20 @@ public class MainMenuScreen implements Screen {
             }
         });
         botonSalir.crearComponente();
-	}
+    }
 
-	@Override
-	public void render(float delta) {
-		ScreenUtils.clear(1, 0, 0, 1);
 
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(1, 0, 0, 1);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
         batch.draw(game.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         font.getData().setScale(3, 3);
-		font.draw(batch, "Fruit Drop ", 100, camera.viewportHeight/2+150);
+        font.draw(batch, "Fruit Drop ", 100, camera.viewportHeight/2+150);
         font.getData().setScale(2, 2);
-		batch.end();
+        batch.end();
 
         botonSalir.dibujarComponente();
         botonIniciar.dibujarComponente();
@@ -86,37 +83,31 @@ public class MainMenuScreen implements Screen {
 
     }
 
-	@Override
-	public void show() {
-		game.getMusic().play();
+    @Override
+    public void show() {
+        game.getMusic().play();
+    }
 
-	}
-
-	@Override
-	public void resize(int width, int height) {
+    @Override
+    public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-	}
+    }
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
+    @Override
+    public void pause() {
+        // TODO Auto-generated method stub
+    }
+    @Override
+    public void resume() {
+        // TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    public void hide() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispose() {
-	}
-
+    @Override
+    public void dispose() {
+    }
 }

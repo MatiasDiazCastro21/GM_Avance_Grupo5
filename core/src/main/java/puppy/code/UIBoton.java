@@ -71,4 +71,13 @@ public class UIBoton implements UI {
     public Stage getStage() {
         return stage;
     }
+
+    public float getPosX() {
+        return posX;
+    }
+
+    public float getPosY() {
+        return posY;
+    }
+    
 }

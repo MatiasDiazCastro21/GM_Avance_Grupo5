@@ -123,6 +123,14 @@ public class Drop{
         puntosSound.dispose();
     }
 
+    public long getLastDropTime() {
+        return lastDropTime;
+    }
+
+    public void setLastDropTime(long lastDropTime) {
+        this.lastDropTime = lastDropTime;
+    }
+
 
 
 }

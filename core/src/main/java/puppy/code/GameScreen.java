@@ -13,20 +13,20 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
-	final GameLluviaMenu game;
+    final GameLluviaMenu game;
     private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private BitmapFont font;
-	private Canasta canasta;
-	private Drop drop;
+    private SpriteBatch batch;
+    private BitmapFont font;
+    private Canasta canasta;
+    private Drop drop;
     private Texture fondo;
     private Texture fondoCalavera;
     private Music music;
     private Music musicCalaca;
 
-	//boolean activo = true;
-	public GameScreen(final GameLluviaMenu game) {
-		this.game = game;
+    //boolean activo = true;
+    public GameScreen(final GameLluviaMenu game) {
+        this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
         cargarAssets();
@@ -46,7 +46,7 @@ public class GameScreen implements Screen {
         music.play();
 
 
-	}
+    }
 
     private void cargarAssets(){
         Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurtSound.mp3"));
@@ -80,18 +80,14 @@ public class GameScreen implements Screen {
         font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
     }
 
-	@Override
-	public void render(float delta) {
-		ScreenUtils.clear(0, 0, 0.2f, 1);
-
-		//actualizar matrices de la cámara
-		camera.update();
-		//actualizar
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		//dibujar textos
-
-
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+        //actualizar matrices de la cámara
+        camera.update();
+        //actualizar
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
         if (canasta.efectoCalavera()) {
             music.pause();
             if (!musicCalaca.isPlaying()) {
@@ -110,27 +106,25 @@ public class GameScreen implements Screen {
             musicCalaca.stop();
         }
 
-
-
-
-		if (!canasta.estaHerido()) {
+        if (!canasta.estaHerido()) {
             if (!music.isPlaying() && !canasta.efectoCalavera()) {
                 music.play();
             }
-			// movimiento del tarro desde teclado
-	        canasta.actualizar();
-			// caida de la drop
-	       if (!drop.actualizarMovimiento(canasta)) {
-	    	  //actualizar HigherScore
-	    	  if (game.getHigherScore()< canasta.getPuntos())
-	    		  game.setHigherScore(canasta.getPuntos());
-	    	  //ir a la ventana de finde juego y destruir la actual
-              music.stop();
-              musicCalaca.stop();
-	    	  game.setScreen(new GameOverScreen(game));
-	    	  dispose();
-	       }
-		}
+            // movimiento del tarro desde teclado
+            canasta.actualizar();
+            // caida de la drop
+            if (!drop.actualizarMovimiento(canasta)) {
+            //actualizar HigherScore
+                if (game.getHigherScore()< canasta.getPuntos()){
+                    game.setHigherScore(canasta.getPuntos());
+                    //ir a la ventana de finde juego y destruir la actual
+                    music.stop();
+                    musicCalaca.stop();
+                    game.setScreen(new GameOverScreen(game));
+                    dispose();
+                }
+            }
+        }
         else{
             music.pause();
         }
@@ -138,44 +132,38 @@ public class GameScreen implements Screen {
             pause();
         }
 
+        batch.end();
 
-		batch.end();
-
-	}
-
+    }
 
 
-	@Override
-	public void resize(int width, int height) {
-	}
+    @Override
+    public void resize(int width, int height) {
+    }
+    @Override
+    public void show() {
+        // continuar con sonido de drop
+        music.play();
+    }
+    @Override
+    public void hide() {
+    }
 
-	@Override
-	public void show() {
-	  // continuar con sonido de drop
-      music.play();
-	}
-
-	@Override
-	public void hide() {
-
-	}
-
-	@Override
-	public void pause() {
+    @Override
+    public void pause() {
         music.pause();
         musicCalaca.pause();
-		game.setScreen(new PausaScreen(game, this));
-	}
+        game.setScreen(new PausaScreen(game, this));
+    }
 
-	@Override
-	public void resume() {
-	}
+    @Override
+    public void resume() {
+    }
 
-	@Override
-	public void dispose() {
-      canasta.destruir();
-      drop.destruir();
-
-	}
+    @Override
+    public void dispose() {
+        canasta.destruir();
+        drop.destruir();
+    }
 
 }

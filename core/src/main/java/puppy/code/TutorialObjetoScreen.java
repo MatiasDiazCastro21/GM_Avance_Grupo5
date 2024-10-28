@@ -131,4 +131,6 @@ public class TutorialObjetoScreen implements Screen {
     public void dispose() {
         //TODO
     }
+    
+    
 }

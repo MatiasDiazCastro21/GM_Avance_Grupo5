@@ -22,7 +22,6 @@ public class TutorialControlScreen implements Screen{
     private Stage stage;
     private Texture flechas, escape,aAndD,shift,espacio;
     private ImgText tutorialFlecha, tutorialEscape, tutorialAAndD, tutorialShift, tutorialEspacio;
-    //private Texture fondo;
 
     public TutorialControlScreen(final GameLluviaMenu game) {
         this.game = game;
