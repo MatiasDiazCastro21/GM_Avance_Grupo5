@@ -117,12 +117,11 @@ public class GameScreen implements Screen {
             //actualizar HigherScore
                 if (game.getHigherScore()< canasta.getPuntos()){
                     game.setHigherScore(canasta.getPuntos());
-                    //ir a la ventana de finde juego y destruir la actual
-                    music.stop();
-                    musicCalaca.stop();
-                    game.setScreen(new GameOverScreen(game));
-                    dispose();
                 }
+                music.stop();
+                musicCalaca.stop();
+                game.setScreen(new GameOverScreen(game));
+                dispose();
             }
         }
         else{
@@ -139,6 +138,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+
     }
     @Override
     public void show() {
