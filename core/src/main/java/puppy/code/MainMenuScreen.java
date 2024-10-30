@@ -3,7 +3,6 @@ package puppy.code;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
 public class MainMenuScreen implements Screen {
-    final GameLluviaMenu game;
+    final GameFruitMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -23,7 +22,7 @@ public class MainMenuScreen implements Screen {
     private UIBoton botonTutorial;
     private Stage stage;
 
-    public MainMenuScreen(final GameLluviaMenu game) {
+    public MainMenuScreen(final GameFruitMenu game) {
         this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();

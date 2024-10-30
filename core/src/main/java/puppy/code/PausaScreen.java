@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
 public class PausaScreen implements Screen {
-    private final GameLluviaMenu game;
+    private final GameFruitMenu game;
     private GameScreen juego;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -25,7 +25,7 @@ public class PausaScreen implements Screen {
     private UIBoton botonSalir;
     private Texture fondo;
 
-    public PausaScreen (final GameLluviaMenu game, GameScreen juego) {
+    public PausaScreen (final GameFruitMenu game, GameScreen juego) {
         this.game = game;
         this.juego = juego;
         this.batch = game.getBatch();
@@ -83,12 +83,12 @@ public class PausaScreen implements Screen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
-    
+
     @Override
     public void pause() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     public void resume() {
         // TODO Auto-generated method stub

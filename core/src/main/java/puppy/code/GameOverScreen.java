@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameOverScreen implements Screen {
-    private final GameLluviaMenu game;
+    private final GameFruitMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -24,7 +24,7 @@ public class GameOverScreen implements Screen {
     private Texture fondo;
     private Music musicGameOver;
 
-    public GameOverScreen(final GameLluviaMenu game) {
+    public GameOverScreen(final GameFruitMenu game) {
         this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();

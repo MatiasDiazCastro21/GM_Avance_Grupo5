@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
 public class TutorialControlScreen implements Screen{
-    final GameLluviaMenu game;
+    final GameFruitMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -23,7 +23,7 @@ public class TutorialControlScreen implements Screen{
     private Texture flechas, escape,aAndD,shift,espacio;
     private ImgText tutorialFlecha, tutorialEscape, tutorialAAndD, tutorialShift, tutorialEspacio;
 
-    public TutorialControlScreen(final GameLluviaMenu game) {
+    public TutorialControlScreen(final GameFruitMenu game) {
         this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();

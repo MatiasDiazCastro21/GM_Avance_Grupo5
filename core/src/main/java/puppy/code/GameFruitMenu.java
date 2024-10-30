@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class GameLluviaMenu extends Game {
+public class GameFruitMenu extends Game {
     private SpriteBatch batch;
     private BitmapFont font;
     private int higherScore;

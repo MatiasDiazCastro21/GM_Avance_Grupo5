@@ -17,8 +17,5 @@ public abstract class ProyectilAbs {
         this.textura = textura;
         this.sonido = sonido;
     }
-
     public abstract void interactuarConCanasta(Canasta canasta);
-
-
 }

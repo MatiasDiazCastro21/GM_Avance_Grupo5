@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
-    final GameLluviaMenu game;
+    final GameFruitMenu game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
     private Music musicCalaca;
 
     //boolean activo = true;
-    public GameScreen(final GameLluviaMenu game) {
+    public GameScreen(final GameFruitMenu game) {
         this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();

@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class TutorialObjetoScreen implements Screen {
-    final GameLluviaMenu game;
+    final GameFruitMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -22,7 +22,7 @@ public class TutorialObjetoScreen implements Screen {
     private Texture puntos,danio,vida,scoreExtra,calavera,dash;
     private ImgText tutorialPuntos, tutorialDanio, tutorialVida, tutorialScoreExtra, tutorialCalavera, tutorialDash;
 
-    public TutorialObjetoScreen(final GameLluviaMenu game) {
+    public TutorialObjetoScreen(final GameFruitMenu game) {
         this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
@@ -131,6 +131,6 @@ public class TutorialObjetoScreen implements Screen {
     public void dispose() {
         //TODO
     }
-    
-    
+
+
 }
