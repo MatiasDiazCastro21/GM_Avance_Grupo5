@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -69,14 +70,13 @@ public class Canasta {
         tiempoHerido=tiempoHeridoMax;
     }
 
-
     public void dibujar(SpriteBatch batch) {
         if (!herido){
             batch.draw(bucketImage, bucket.x, bucket.y);
         }
         else {
             direccion = 0;
-            batch.draw(bucketImage, bucket.x, bucket.y+ MathUtils.random(-5,5));
+            batch.draw(bucketImage, bucket.x, (bucket.y+ MathUtils.random(-5,5)));
             tiempoHerido--;
             if (tiempoHerido<=0){
                 herido = false;
