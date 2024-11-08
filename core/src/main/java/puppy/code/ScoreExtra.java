@@ -7,6 +7,12 @@ public class ScoreExtra extends ProyectilAbs{
 
     public ScoreExtra(Texture textura, Sound sonido) {
         super(textura, sonido);
+        sprite.hitBox.width -= 12;
+        sprite.setHitBoxPlusX(8);
+        sprite.actualizarX();
+        sprite.hitBox.height -= 12;
+        sprite.setHitBoxPlusY(5);
+        sprite.actualizarY();
     }
 
     @Override

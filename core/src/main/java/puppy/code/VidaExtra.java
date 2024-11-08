@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 public class VidaExtra extends ProyectilAbs {
     public VidaExtra(Texture textura, Sound sonido) {
         super(textura, sonido);
+        sprite.hitBox.width += 7;
+        sprite.setHitBoxPlusX(0);
+        sprite.actualizarX();
     }
 
     @Override

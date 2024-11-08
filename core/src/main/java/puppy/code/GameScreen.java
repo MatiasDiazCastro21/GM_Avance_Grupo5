@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -23,12 +24,15 @@ public class GameScreen implements Screen {
     private Texture fondoCalavera;
     private Music music;
     private Music musicCalaca;
+    private ShapeRenderer shapeRenderer;
+    private boolean hitBoxOn = false;
 
     //boolean activo = true;
     public GameScreen(final GameFruitMenu game) {
         this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
+        shapeRenderer = new ShapeRenderer();
         cargarAssets();
         music.setLooping(true);
         music.setVolume(0.05f);
@@ -72,12 +76,12 @@ public class GameScreen implements Screen {
     }
 
     private void dibujarComponentes(){
-        canasta.dibujar(batch);
         drop.dibujar(batch);
         font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
         font.draw(batch, "Vidas : " + canasta.getVidas(), 650, 475);
         font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
         font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
+        canasta.dibujar(batch);
     }
 
     @Override
@@ -130,11 +134,27 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pause();
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            hitBoxOn = !hitBoxOn;
+        }
 
         batch.end();
 
+        if (hitBoxOn) {
+            dibujarHitbox();
+        }
+
+
     }
 
+    private void dibujarHitbox() {
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0, 0, 1, 1);
+        canasta.dibujarHitbox(shapeRenderer);
+        drop.dibujarHitbox(shapeRenderer);
+        shapeRenderer.end();
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -164,6 +184,14 @@ public class GameScreen implements Screen {
     public void dispose() {
         canasta.destruir();
         drop.destruir();
+    }
+
+    public void setHitBoxON(boolean hitBoxOn) {
+        this.hitBoxOn = hitBoxOn;
+    }
+
+    public boolean getHitBoxON() {
+        return hitBoxOn;
     }
 
 }

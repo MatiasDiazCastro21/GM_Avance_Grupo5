@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -51,7 +52,7 @@ public class Drop{
                 objetoEspecial();
             }
             else if (random < 65){
-                drops.add(new Bomba(bomba, explosion));
+                //drops.add(new Bomba(bomba, explosion));
             }
         }
         else {
@@ -59,7 +60,7 @@ public class Drop{
                 drops.add(new Manzana(manzana, puntosSound));
 
             } else if (random < 98) {
-                drops.add(new Bomba(bomba, explosion));
+                //drops.add(new Bomba(bomba, explosion));
             }
             else{
                 objetoEspecial();
@@ -89,6 +90,12 @@ public class Drop{
         }
     }
 
+    public void dibujarHitbox(ShapeRenderer shapeRenderer) {
+        for (ProyectilAbs drop : drops) {
+            shapeRenderer.rect(drop.sprite.hitBox.x, drop.sprite.hitBox.y, drop.sprite.hitBox.width, drop.sprite.hitBox.height);
+        }
+    }
+
     public boolean actualizarMovimiento(Canasta canasta) {
         if (TimeUtils.nanoTime() - lastDropTime > 100000000) crearDrop(canasta);
 
@@ -98,11 +105,12 @@ public class Drop{
 
         for (int i = 0; i < drops.size; i++) {
             ProyectilAbs drop = drops.get(i);
-            drop.hitBox.y -= 300 * Gdx.graphics.getDeltaTime();
+            //drop.sprite.hitBox.y -= 100 * Gdx.graphics.getDeltaTime();
+            drop.sprite.setY(drop.sprite.getY()-(500 * Gdx.graphics.getDeltaTime()));
 
-            if (drop.hitBox.y + 64 < 0) {
+            if (drop.sprite.hitBox.y + 64 < 0) {
                 drops.removeIndex(i);
-            } else if (drop.hitBox.overlaps(canasta.getArea())) {
+            } else if (drop.sprite.hitBox.overlaps(canasta.getArea())) {
                 drop.interactuarConCanasta(canasta);
                 if (canasta.getVidas() <= 0) {
                     return false;
@@ -115,7 +123,7 @@ public class Drop{
 
     public void dibujar(SpriteBatch batch) {
         for (ProyectilAbs drop : drops) {
-            batch.draw(drop.textura, drop.hitBox.x, drop.hitBox.y);
+            batch.draw(drop.textura, drop.sprite.getX(), drop.sprite.getY());
         }
     }
 

@@ -11,6 +11,12 @@ public class Calavera extends ProyectilAbs{
     public Calavera(Texture textura, Sound sonido)
     {
         super(textura,sonido);
+        sprite.hitBox.width -= 20;
+        sprite.setHitBoxPlusX(8);
+        sprite.actualizarX();
+        sprite.hitBox.height -= 20;
+        sprite.setHitBoxPlusY(12);
+        sprite.actualizarY();
     }
 
     @Override
