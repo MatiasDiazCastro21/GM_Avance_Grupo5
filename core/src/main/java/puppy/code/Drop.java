@@ -52,7 +52,7 @@ public class Drop{
                 objetoEspecial();
             }
             else if (random < 65){
-                //drops.add(new Bomba(bomba, explosion));
+                drops.add(new Bomba(bomba, explosion));
             }
         }
         else {
@@ -60,7 +60,7 @@ public class Drop{
                 drops.add(new Manzana(manzana, puntosSound));
 
             } else if (random < 98) {
-                //drops.add(new Bomba(bomba, explosion));
+                drops.add(new Bomba(bomba, explosion));
             }
             else{
                 objetoEspecial();

@@ -82,6 +82,11 @@ public class GameScreen implements Screen {
         font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
         font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
         canasta.dibujar(batch);
+        batch.end();
+        if(hitBoxOn){
+            dibujarHitbox();
+        }
+        batch.begin();
     }
 
     @Override
@@ -92,13 +97,13 @@ public class GameScreen implements Screen {
         //actualizar
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+
         if (canasta.efectoCalavera()) {
             music.pause();
             if (!musicCalaca.isPlaying()) {
                 musicCalaca.play();
             }
             batch.draw(fondoCalavera, 0, 0, camera.viewportWidth, camera.viewportHeight);
-            dibujarComponentes();
             long tiempoRestante = 10 - (TimeUtils.nanoTime() - canasta.getTiempoCalavera()) / 1_000_000_000L;
             font.draw(batch, "Efecto Calavera: " + tiempoRestante + "s", camera.viewportWidth/2-105, 400);
         }
@@ -106,10 +111,9 @@ public class GameScreen implements Screen {
 
         else{
             batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
-            dibujarComponentes();
             musicCalaca.stop();
         }
-
+        dibujarComponentes();
         if (!canasta.estaHerido()) {
             if (!music.isPlaying() && !canasta.efectoCalavera()) {
                 music.play();
@@ -131,20 +135,14 @@ public class GameScreen implements Screen {
         else{
             music.pause();
         }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pause();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
             hitBoxOn = !hitBoxOn;
         }
-
         batch.end();
-
-        if (hitBoxOn) {
-            dibujarHitbox();
-        }
-
-
     }
 
     private void dibujarHitbox() {

@@ -9,7 +9,7 @@ public class Bomba extends ProyectilAbs {
         sprite.hitBox.width -= 20;
         sprite.setHitBoxPlusX(0);
         sprite.hitBox.height -= 20;
-        sprite.setHitBoxPlusY(5);
+        sprite.setHitBoxPlusY(-1);
         sprite.actualizarY();
     }
     @Override

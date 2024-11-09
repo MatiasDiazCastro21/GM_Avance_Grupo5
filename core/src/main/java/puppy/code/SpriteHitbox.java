@@ -34,7 +34,7 @@ public class SpriteHitbox {
 
     public void setY(float y) {
         this.y = y;
-        this.hitBox.y = (y);
+        this.hitBox.y = (y+hitBoxPlusY);
     }
 
     public float getX() {
@@ -59,6 +59,8 @@ public class SpriteHitbox {
     public void setHitBoxPlusY(float hitBoxPlus) {
         this.hitBoxPlusY = hitBoxPlus;
     }
+
+
 
 
 }
