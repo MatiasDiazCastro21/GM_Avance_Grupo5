@@ -17,8 +17,12 @@ public class Dash extends ProyectilAbs {
     @Override
     public void interactuarConCanasta(Canasta canasta) {
         canasta.obtenerDash();
+    }
+
+    public void sonido(){
         sonido.play(0.25f);
     }
+
 
 
 }

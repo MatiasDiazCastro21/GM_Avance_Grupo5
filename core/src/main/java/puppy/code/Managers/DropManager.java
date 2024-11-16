@@ -74,7 +74,7 @@ public class DropManager {
 
     public void dibujarHitbox(ShapeRenderer shapeRenderer) {
         for (ProyectilAbs drop : drops) {
-            shapeRenderer.rect(drop.sprite.hitBox.x, drop.sprite.hitBox.y, drop.sprite.hitBox.width, drop.sprite.hitBox.height);
+            drop.sprite.dibujarHitbox(shapeRenderer);
         }
     }
 
@@ -86,6 +86,7 @@ public class DropManager {
     }
 
     public boolean actualizarMovimiento(Canasta canasta) {
+        float movimiento;
         if (TimeUtils.nanoTime() - lastDropTime > 100000000) crearDrop(canasta);
 
         if (!canasta.efectoCalavera()) {
@@ -96,14 +97,11 @@ public class DropManager {
             ProyectilAbs drop = drops.get(i);
             //Prueba de cambio de velocidad exponencialmente
             cambioVelocidad(canasta);
-            drop.sprite.setY(drop.sprite.getY()-(multiTiempo * Gdx.graphics.getDeltaTime()));
-
             //drop.sprite.setY(drop.sprite.getY()-(300 * Gdx.graphics.getDeltaTime()));
 
-            if (drop.sprite.hitBox.y + 64 < 0) {
-                drops.removeIndex(i);
-            } else if (drop.sprite.hitBox.overlaps(canasta.getArea())) {
-                drop.interactuarConCanasta(canasta);
+            movimiento = drop.sprite.getY()-(multiTiempo * Gdx.graphics.getDeltaTime());
+
+            if (drop.interactuar(canasta, movimiento)) {
                 if (canasta.getVidas() <= 0) {
                     return false;
                 }

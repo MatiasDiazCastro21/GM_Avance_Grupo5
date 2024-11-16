@@ -17,6 +17,10 @@ public class Manzana extends ProyectilAbs {
     @Override
     public void interactuarConCanasta(Canasta canasta) {
         canasta.sumarPuntos(10);
+    }
+
+    public void sonido ()
+    {
         sonido.play(0.05f);
     }
 

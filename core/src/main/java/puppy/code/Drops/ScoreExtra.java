@@ -19,6 +19,9 @@ public class ScoreExtra extends ProyectilAbs {
     @Override
     public void interactuarConCanasta(Canasta canasta) {
         canasta.sumarPuntos(1000);
+    }
+    public void sonido ()
+    {
         sonido.play(0.05f);
     }
 

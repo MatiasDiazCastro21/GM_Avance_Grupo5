@@ -16,8 +16,11 @@ public class Bomba extends ProyectilAbs {
     @Override
     public void interactuarConCanasta(Canasta canasta) {
         canasta.dañar();
-        sonido.play(0.05f);
+    }
 
+    public void sonido()
+    {
+        sonido.play(0.05f);
     }
 
 

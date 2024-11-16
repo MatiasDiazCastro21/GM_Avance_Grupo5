@@ -25,6 +25,10 @@ public class Calavera extends ProyectilAbs {
         tiempoInicio = TimeUtils.nanoTime();
         canasta.activarEfectoCalavera(tiempoInicio);
     }
+    public void sonido()
+    {
+        sonido.play(0.05f);
+    }
 
 
 

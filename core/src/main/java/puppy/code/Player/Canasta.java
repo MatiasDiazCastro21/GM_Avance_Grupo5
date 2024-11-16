@@ -81,7 +81,7 @@ public class Canasta {
     }
 
     public void dibujarHitbox(ShapeRenderer shapeRenderer) {
-        shapeRenderer.rect(bucket.hitBox.x, bucket.hitBox.y, bucket.hitBox.width, bucket.hitBox.height);
+        bucket.dibujarHitbox(shapeRenderer);
     }
 
     public void dibujar(SpriteBatch batch) {

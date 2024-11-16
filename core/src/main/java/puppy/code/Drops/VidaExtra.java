@@ -15,6 +15,10 @@ public class VidaExtra extends ProyectilAbs {
     @Override
     public void interactuarConCanasta(Canasta canasta) {
         canasta.sumarVida();
+    }
+
+    public void sonido()
+    {
         sonido.play(0.025f);
     }
 }
