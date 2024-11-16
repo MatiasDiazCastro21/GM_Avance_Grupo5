@@ -1,7 +1,8 @@
-package puppy.code;
+package puppy.code.Drops;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import puppy.code.Player.Canasta;
 
 public class VidaExtra extends ProyectilAbs {
     public VidaExtra(Texture textura, Sound sonido) {

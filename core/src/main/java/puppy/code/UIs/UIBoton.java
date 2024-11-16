@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.UIs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -79,5 +79,5 @@ public class UIBoton implements UI {
     public float getPosY() {
         return posY;
     }
-    
+
 }

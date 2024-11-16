@@ -1,7 +1,8 @@
-package puppy.code;
+package puppy.code.Drops;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import puppy.code.Player.Canasta;
 
 public class Bomba extends ProyectilAbs {
     public Bomba(Texture textura, Sound sonido) {

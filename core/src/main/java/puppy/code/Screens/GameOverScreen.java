@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,9 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import puppy.code.GameFruitBase;
+import puppy.code.UIs.UIBoton;
 
 public class GameOverScreen implements Screen {
-    private final GameFruitMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -24,10 +25,9 @@ public class GameOverScreen implements Screen {
     private Texture fondo;
     private Music musicGameOver;
 
-    public GameOverScreen(final GameFruitMenu game) {
-        this.game = game;
-        this.batch = game.getBatch();
-        this.font = game.getFont();
+    public GameOverScreen() {
+        this.batch = GameFruitBase.getIns().getBatch();
+        this.font = GameFruitBase.getIns().getFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
@@ -39,7 +39,7 @@ public class GameOverScreen implements Screen {
         botonReiniciar = new UIBoton(stage,100,camera.viewportHeight/2-50,font,"Reiniciar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                GameFruitBase.getIns().setScreen(new GameScreen());
                 musicGameOver.stop();
                 dispose();
             }
@@ -49,7 +49,7 @@ public class GameOverScreen implements Screen {
         botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-110,font,"Volver a menú",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainMenuScreen(game));
+                GameFruitBase.getIns().setScreen(new MainMenuScreen());
                 musicGameOver.stop();
             }
         });

@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,10 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import puppy.code.GameFruitBase;
+import puppy.code.UIs.UIBoton;
 
 
 public class MainMenuScreen implements Screen {
-    final GameFruitMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -22,10 +23,11 @@ public class MainMenuScreen implements Screen {
     private UIBoton botonTutorial;
     private Stage stage;
 
-    public MainMenuScreen(final GameFruitMenu game) {
-        this.game = game;
-        this.batch = game.getBatch();
-        this.font = game.getFont();
+    public MainMenuScreen() {
+        //final GameFruitBase game
+        //this.game = game;
+        this.batch = GameFruitBase.getIns().getBatch();
+        this.font = GameFruitBase.getIns().getFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
@@ -35,8 +37,8 @@ public class MainMenuScreen implements Screen {
         botonIniciar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Empezar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
-                game.getMusic().stop();
+                GameFruitBase.getIns().setScreen(new GameScreen());
+                GameFruitBase.getIns().getMusic().stop();
                 dispose();
             }
         });
@@ -46,7 +48,7 @@ public class MainMenuScreen implements Screen {
         botonTutorial = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Tutorial",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TutorialControlScreen(game));
+                GameFruitBase.getIns().setScreen(new TutorialControlScreen());
                 dispose();
             }
         });
@@ -70,9 +72,9 @@ public class MainMenuScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(game.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
+        batch.draw(GameFruitBase.getIns().getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         font.getData().setScale(3, 3);
-        font.draw(batch, "Fruit Drop ", 100, camera.viewportHeight/2+150);
+        font.draw(batch, "Apple Drop ", 100, camera.viewportHeight/2+150);
         font.getData().setScale(2, 2);
         batch.end();
 
@@ -84,7 +86,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        game.getMusic().play();
+        GameFruitBase.getIns().getMusic().play();
     }
 
     @Override

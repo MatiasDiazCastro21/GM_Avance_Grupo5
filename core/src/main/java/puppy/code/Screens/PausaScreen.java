@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,10 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import puppy.code.GameFruitBase;
+import puppy.code.UIs.UIBoton;
 
 
 public class PausaScreen implements Screen {
-    private final GameFruitMenu game;
     private GameScreen juego;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -25,11 +26,10 @@ public class PausaScreen implements Screen {
     private UIBoton botonSalir;
     private Texture fondo;
 
-    public PausaScreen (final GameFruitMenu game, GameScreen juego) {
-        this.game = game;
+    public PausaScreen (GameScreen juego) {
         this.juego = juego;
-        this.batch = game.getBatch();
-        this.font = game.getFont();
+        this.batch = GameFruitBase.getIns().getBatch();
+        this.font = GameFruitBase.getIns().getFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
@@ -39,7 +39,7 @@ public class PausaScreen implements Screen {
         botonReanudar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Reanudar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(juego);
+                GameFruitBase.getIns().setScreen(juego);
                 dispose();
             }
         });
@@ -48,7 +48,7 @@ public class PausaScreen implements Screen {
         botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Salir menu",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainMenuScreen(game));
+                GameFruitBase.getIns().setScreen(new MainMenuScreen());
             }
         });
         botonSalir.crearComponente();
@@ -57,19 +57,19 @@ public class PausaScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 1.0f, 0.5f);
-	camera.update();
-	batch.setProjectionMatrix(camera.combined);
-	batch.begin();
+	    camera.update();
+	    batch.setProjectionMatrix(camera.combined);
+	    batch.begin();
         batch.draw(fondo, 0, 0, camera.viewportWidth, camera.viewportHeight);
-	font.draw(batch, "Juego en Pausa ", 100, camera.viewportHeight/2+150);
+	    font.draw(batch, "Juego en Pausa ", 100, camera.viewportHeight/2+150);
         batch.end();
         stage.act();
         stage.draw();
         botonReanudar.dibujarComponente();
         botonSalir.dibujarComponente();
 
-	if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(juego);
+	    if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            GameFruitBase.getIns().setScreen(juego);
             dispose();
         }
     }

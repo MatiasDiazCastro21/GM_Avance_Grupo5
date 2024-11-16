@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,9 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import puppy.code.GameFruitBase;
+import puppy.code.UIs.ImgText;
+import puppy.code.UIs.UIBoton;
 
 public class TutorialObjetoScreen implements Screen {
-    final GameFruitMenu game;
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
@@ -22,10 +24,9 @@ public class TutorialObjetoScreen implements Screen {
     private Texture puntos,danio,vida,scoreExtra,calavera,dash;
     private ImgText tutorialPuntos, tutorialDanio, tutorialVida, tutorialScoreExtra, tutorialCalavera, tutorialDash;
 
-    public TutorialObjetoScreen(final GameFruitMenu game) {
-        this.game = game;
-        this.batch = game.getBatch();
-        this.font = game.getFont();
+    public TutorialObjetoScreen() {
+        this.batch = GameFruitBase.getIns().getBatch();
+        this.font = GameFruitBase.getIns().getFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
@@ -34,7 +35,7 @@ public class TutorialObjetoScreen implements Screen {
         botonRegresar = new UIBoton(stage,350,camera.viewportHeight/2-200,font,"Regresar",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainMenuScreen(game));
+                GameFruitBase.getIns().setScreen(new MainMenuScreen());
                 dispose();
             }
         });
@@ -44,7 +45,7 @@ public class TutorialObjetoScreen implements Screen {
         botonControl = new UIBoton(stage,100,camera.viewportHeight/2-200,font,"Controles",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TutorialControlScreen(game));
+                GameFruitBase.getIns().setScreen(new TutorialControlScreen());
                 dispose();
             }
         });
@@ -66,7 +67,6 @@ public class TutorialObjetoScreen implements Screen {
         tutorialCalavera = new ImgText(font, batch, calavera, "Este objeto hace el juego mas difícil:", 100, 180, 30, 30, 17);
         dash = new Texture(Gdx.files.internal("dash.png"));
         tutorialDash = new ImgText(font, batch, dash, "Este objeto te da cargas de dash:", 100, 140, 30, 30, 10);
-
     }
 
 
@@ -91,7 +91,7 @@ public class TutorialObjetoScreen implements Screen {
         float ogScaleX = fontData.scaleX;
         float ogScaleY = fontData.scaleY;
         font.getData().setScale(3.0f);
-        batch.draw(game.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
+        batch.draw(GameFruitBase.getIns().getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         font.draw(batch, "Como jugar", 100, camera.viewportHeight/2+200);
         font.getData().setScale(2.0f, 2.0f);
         font.draw(batch, "Obten la mayor cantidad de puntos posibles!", 100, 380);
@@ -104,7 +104,7 @@ public class TutorialObjetoScreen implements Screen {
 
     @Override
     public void show() {
-        game.getMusic().play();
+        GameFruitBase.getIns().getMusic().play();
     }
 
     @Override

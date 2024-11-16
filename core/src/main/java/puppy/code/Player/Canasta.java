@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,12 +9,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
+import puppy.code.Managers.HitBoxManager;
 
 public class Canasta {
-    private SpriteHitbox bucket;
+    private HitBoxManager bucket;
     private Texture bucketImage;
     private Sound sonidoHerido;
-    private int vidas = 3;
+    private int vidas = 1000;
     private int puntos = 0;
     private int velx = 400;
     private boolean herido = false;
@@ -53,7 +54,7 @@ public class Canasta {
     }
 
     public void crear() {
-        bucket = new SpriteHitbox();
+        bucket = new HitBoxManager();
         float posX = (float)((800 / 2) - (bucketImage.getWidth() / 2));
         float posY = 20;
 

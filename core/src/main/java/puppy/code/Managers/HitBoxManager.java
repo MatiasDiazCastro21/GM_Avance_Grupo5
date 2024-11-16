@@ -1,20 +1,19 @@
-package puppy.code;
+package puppy.code.Managers;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-public class SpriteHitbox {
+public class HitBoxManager {
     public Rectangle hitBox;
     private float x;
     private float y;
     private float hitBoxPlusX;
     private float hitBoxPlusY;
 
-    public SpriteHitbox() {
+    public HitBoxManager() {
         this.hitBox = new Rectangle();
     }
 
-    public SpriteHitbox(int x, int y) {
+    public HitBoxManager(int x, int y) {
         this.hitBox = new Rectangle(x,y,64,64);
         this.x = x;
         this.y = y;

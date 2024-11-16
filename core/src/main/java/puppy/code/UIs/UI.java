@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.UIs;
 
 public interface UI {
     void crearComponente();

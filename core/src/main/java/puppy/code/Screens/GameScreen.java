@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,14 +12,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+import puppy.code.Player.Canasta;
+import puppy.code.Managers.DropManager;
+import puppy.code.GameFruitBase;
 
 public class GameScreen implements Screen {
-    final GameFruitMenu game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private BitmapFont font;
     private Canasta canasta;
-    private Drop drop;
+    private DropManager dropManager;
     private Texture fondo;
     private Texture fondoCalavera;
     private Music music;
@@ -28,12 +30,12 @@ public class GameScreen implements Screen {
     private boolean hitBoxOn = false;
 
     //boolean activo = true;
-    public GameScreen(final GameFruitMenu game) {
-        this.game = game;
-        this.batch = game.getBatch();
-        this.font = game.getFont();
+    public GameScreen() {
+        this.batch = GameFruitBase.getIns().getBatch();
+        this.font = GameFruitBase.getIns().getFont();
         shapeRenderer = new ShapeRenderer();
         cargarAssets();
+        dropManager = new DropManager();
         music.setLooping(true);
         music.setVolume(0.05f);
         musicCalaca.setLooping(true);
@@ -45,17 +47,16 @@ public class GameScreen implements Screen {
         //creacion de "jugador"
         canasta.crear();
 
-        //creacion de drop
-        drop.crearConCanasta(canasta);
+        //creacion de dropManager
+        dropManager.crearConCanasta(canasta);
         music.play();
-
-
     }
 
     private void cargarAssets(){
         Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurtSound.mp3"));
         canasta = new Canasta(new Texture(Gdx.files.internal("canasta.png")),hurtSound);
 
+        /*
         Texture score = new Texture(Gdx.files.internal("Manzana.png"));
         Texture bomba = new Texture(Gdx.files.internal("Bomba.png"));
         Texture vidaExtra = new Texture(Gdx.files.internal("corazon.png"));
@@ -68,18 +69,18 @@ public class GameScreen implements Screen {
         Sound scoreExtraSound = Gdx.audio.newSound(Gdx.files.internal("scoreExtra.mp3"));
         Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
         Sound dash = Gdx.audio.newSound(Gdx.files.internal("SonidoDash.mp3"));
+        */
         fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
         fondoCalavera = new Texture(Gdx.files.internal("FondoCalavera.png"));
         music = Gdx.audio.newMusic(Gdx.files.internal("Music.mp3"));
         musicCalaca = Gdx.audio.newMusic(Gdx.files.internal("MusicaCalavera.mp3"));
-        drop = new Drop(score,scoreExtra, bomba, vidaExtra,calavera,dashTexture,dropSound,sonidoVida,scoreExtraSound,explosion,dash);
     }
 
     private void dibujarComponentes(){
-        drop.dibujar(batch);
+        dropManager.dibujar(batch);
         font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
         font.draw(batch, "Vidas : " + canasta.getVidas(), 650, 475);
-        font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
+        font.draw(batch, "HighScore : " + GameFruitBase.getIns().getHigherScore(), camera.viewportWidth/2-50, 475);
         font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
         canasta.dibujar(batch);
         batch.end();
@@ -120,15 +121,15 @@ public class GameScreen implements Screen {
             }
             // movimiento del tarro desde teclado
             canasta.actualizar();
-            // caida de la drop
-            if (!drop.actualizarMovimiento(canasta)) {
+            // caida de la dropManager
+            if (!dropManager.actualizarMovimiento(canasta)) {
             //actualizar HigherScore
-                if (game.getHigherScore()< canasta.getPuntos()){
-                    game.setHigherScore(canasta.getPuntos());
+                if (GameFruitBase.getIns().getHigherScore()< canasta.getPuntos()){
+                    GameFruitBase.getIns().setHigherScore(canasta.getPuntos());
                 }
                 music.stop();
                 musicCalaca.stop();
-                game.setScreen(new GameOverScreen(game));
+                GameFruitBase.getIns().setScreen(new GameOverScreen());
                 dispose();
             }
         }
@@ -150,7 +151,7 @@ public class GameScreen implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(0, 0, 1, 1);
         canasta.dibujarHitbox(shapeRenderer);
-        drop.dibujarHitbox(shapeRenderer);
+        dropManager.dibujarHitbox(shapeRenderer);
         shapeRenderer.end();
     }
 
@@ -160,7 +161,7 @@ public class GameScreen implements Screen {
     }
     @Override
     public void show() {
-        // continuar con sonido de drop
+        // continuar con sonido de dropManager
         music.play();
     }
     @Override
@@ -171,7 +172,7 @@ public class GameScreen implements Screen {
     public void pause() {
         music.pause();
         musicCalaca.pause();
-        game.setScreen(new PausaScreen(game, this));
+        GameFruitBase.getIns().setScreen(new PausaScreen( this));
     }
 
     @Override
@@ -181,7 +182,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         canasta.destruir();
-        drop.destruir();
+        dropManager.destruir();
     }
 
     public void setHitBoxON(boolean hitBoxOn) {

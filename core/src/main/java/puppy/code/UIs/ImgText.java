@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.UIs;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 
-public class ImgText implements UI{
+public class ImgText implements UI {
     private BitmapFont font;
     private Batch batch;
     private Texture img;
@@ -106,6 +106,6 @@ public class ImgText implements UI{
     public void setDistancia(int distancia) {
         this.distancia = distancia;
     }
-    
+
 
 }

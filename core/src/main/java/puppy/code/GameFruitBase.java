@@ -6,13 +6,25 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import puppy.code.Screens.MainMenuScreen;
 
-public class GameFruitMenu extends Game {
+public class GameFruitBase extends Game {
+    private static GameFruitBase instance;
     private SpriteBatch batch;
     private BitmapFont font;
     private int higherScore;
     private Music music;
     private Texture fondo;
+
+    private GameFruitBase() {}
+
+    //Patron singleton
+    public static GameFruitBase getIns() {
+        if (instance == null) {
+            instance = new GameFruitBase();
+        }
+        return instance;
+    }
 
     public void create() {
         batch = new SpriteBatch();
@@ -21,7 +33,7 @@ public class GameFruitMenu extends Game {
         fondo = new Texture(Gdx.files.internal("fondo.png"));
         music.setLooping(true);
         music.setVolume(0.025f);
-        this.setScreen(new MainMenuScreen(this));
+        this.setScreen(new MainMenuScreen());
     }
 
     public void render() {
