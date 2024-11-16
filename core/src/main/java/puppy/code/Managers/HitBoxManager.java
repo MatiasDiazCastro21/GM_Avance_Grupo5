@@ -1,5 +1,7 @@
 package puppy.code.Managers;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 public class HitBoxManager {
@@ -18,6 +20,17 @@ public class HitBoxManager {
         this.x = x;
         this.y = y;
     }
+
+    /*
+    private void dibujarHitbox(ShapeRenderer shapeRenderer, OrthographicCamera camera) {
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0, 0, 1, 1);
+        canasta.dibujarHitbox(shapeRenderer);
+        dropManager.dibujarHitbox(shapeRenderer);
+        shapeRenderer.end();
+    }
+    */
 
     public void actualizarX(){
         this.hitBox.x += hitBoxPlusX;

@@ -21,6 +21,7 @@ public class AudioVisualManager {
     private Sound dashS;
 
     private void cargarAssets() {
+        //Cargar texturas
         manzanaT = new Texture(Gdx.files.internal("Manzana.png"));
         bombaT = new Texture(Gdx.files.internal("Bomba.png"));
         vidaExtraT = new Texture(Gdx.files.internal("corazon.png"));
@@ -28,6 +29,7 @@ public class AudioVisualManager {
         calaveraT = new Texture(Gdx.files.internal("calavera.png"));
         dashT = new Texture(Gdx.files.internal("dash.png"));
 
+        //Cargar sonidos
         manzanaS = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
         vidaExtraS = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
         manzanaOroS = Gdx.audio.newSound(Gdx.files.internal("scoreExtra.mp3"));

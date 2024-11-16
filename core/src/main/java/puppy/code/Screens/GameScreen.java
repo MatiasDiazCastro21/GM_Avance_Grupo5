@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
         this.font = GameFruitBase.getIns().getFont();
         shapeRenderer = new ShapeRenderer();
         cargarAssets();
-        dropManager = new DropManager();
+        dropManager = new  DropManager();
         music.setLooping(true);
         music.setVolume(0.05f);
         musicCalaca.setLooping(true);
@@ -54,26 +54,14 @@ public class GameScreen implements Screen {
 
     private void cargarAssets(){
         Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurtSound.mp3"));
-        canasta = new Canasta(new Texture(Gdx.files.internal("canasta.png")),hurtSound);
+        Texture canastaTexture = new Texture(Gdx.files.internal("canasta.png"));
 
-        /*
-        Texture score = new Texture(Gdx.files.internal("Manzana.png"));
-        Texture bomba = new Texture(Gdx.files.internal("Bomba.png"));
-        Texture vidaExtra = new Texture(Gdx.files.internal("corazon.png"));
-        Texture scoreExtra = new Texture(Gdx.files.internal("ManzanaOro.png"));
-        Texture calavera = new Texture(Gdx.files.internal("calavera.png"));
-        Texture dashTexture = new Texture(Gdx.files.internal("dash.png"));
-
-        Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-        Sound sonidoVida = Gdx.audio.newSound(Gdx.files.internal("vidaExtra.mp3"));
-        Sound scoreExtraSound = Gdx.audio.newSound(Gdx.files.internal("scoreExtra.mp3"));
-        Sound explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-        Sound dash = Gdx.audio.newSound(Gdx.files.internal("SonidoDash.mp3"));
-        */
         fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
         fondoCalavera = new Texture(Gdx.files.internal("FondoCalavera.png"));
         music = Gdx.audio.newMusic(Gdx.files.internal("Music.mp3"));
         musicCalaca = Gdx.audio.newMusic(Gdx.files.internal("MusicaCalavera.mp3"));
+
+        canasta = new Canasta(canastaTexture,hurtSound);
     }
 
     private void dibujarComponentes(){

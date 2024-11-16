@@ -12,20 +12,8 @@ import puppy.code.Player.Canasta;
 public class DropManager {
     private Array<ProyectilAbs> drops;
     private long lastDropTime;
+    //Posible cambio de lugar
     private AudioVisualManager aVM;
-    /*
-    private Texture manzana;
-    private Texture bomba;
-    private Texture vidaExtra;
-    private Texture manzanaOro;
-    private Texture calavera;
-    private Texture dashTexture;
-    private Sound vidaSound;
-    private Sound puntosSound;
-    private Sound scoreExtraSound;
-    private Sound explosion;
-    private Sound dashSound;
-    */
     private int multiTiempo = 300;
     private double exponente = 1.0;
 
