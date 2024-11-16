@@ -13,7 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import puppy.code.GameFruitBase;
+import puppy.code.UIs.ConcreteUIFactory;
+import puppy.code.UIs.UI;
 import puppy.code.UIs.UIBoton;
+import puppy.code.UIs.UIFactory;
 
 
 public class PausaScreen implements Screen {
@@ -22,8 +25,9 @@ public class PausaScreen implements Screen {
     private BitmapFont font;
     private OrthographicCamera camera;
     private Stage stage;
-    private UIBoton botonReanudar;
-    private UIBoton botonSalir;
+    private UI botonReanudar;
+    private UI botonSalir;
+    private UIFactory factory;
     private Texture fondo;
 
     public PausaScreen (GameScreen juego) {
@@ -36,7 +40,13 @@ public class PausaScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         fondo = new Texture(Gdx.files.internal("fondo.png"));
 
-        botonReanudar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Reanudar juego",new ClickListener(){
+        instanciarCompUI();
+    }
+
+    public void instanciarCompUI()
+    {
+        factory = new ConcreteUIFactory();
+        botonReanudar = factory.crearBoton(stage,100,camera.viewportHeight/2+50,font,"Reanudar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameFruitBase.getIns().setScreen(juego);
@@ -45,7 +55,7 @@ public class PausaScreen implements Screen {
         });
         botonReanudar.crearComponente();
 
-        botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Salir menu",new ClickListener(){
+        botonSalir = factory.crearBoton(stage,100,camera.viewportHeight/2-10,font,"Salir menu",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameFruitBase.getIns().setScreen(new MainMenuScreen());

@@ -13,14 +13,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import puppy.code.GameFruitBase;
+import puppy.code.UIs.ConcreteUIFactory;
+import puppy.code.UIs.UI;
 import puppy.code.UIs.UIBoton;
+import puppy.code.UIs.UIFactory;
 
 public class GameOverScreen implements Screen {
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
-    private UIBoton botonReiniciar;
-    private UIBoton botonSalir;
+
+    //Atributos tipo UI
+    private UI botonReiniciar;
+    private UI botonSalir;
+    private UIFactory factory;
+
     private Stage stage;
     private Texture fondo;
     private Music musicGameOver;
@@ -35,8 +42,16 @@ public class GameOverScreen implements Screen {
         fondo = new Texture(Gdx.files.internal("fondo.png"));
         musicGameOver = Gdx.audio.newMusic(Gdx.files.internal("GameOver.mp3"));
         musicGameOver.setVolume(0.05f);
+        instanciarCompUI();
 
-        botonReiniciar = new UIBoton(stage,100,camera.viewportHeight/2-50,font,"Reiniciar juego",new ClickListener(){
+    }
+
+
+    private void instanciarCompUI(){
+        //Botones
+        factory = new ConcreteUIFactory();
+
+        botonReiniciar = factory.crearBoton(stage,100,camera.viewportHeight/2-50,font,"Reiniciar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameFruitBase.getIns().setScreen(new GameScreen());
@@ -46,7 +61,7 @@ public class GameOverScreen implements Screen {
         });
         botonReiniciar.crearComponente();
 
-        botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-110,font,"Volver a menú",new ClickListener(){
+        botonSalir = factory.crearBoton(stage,100,camera.viewportHeight/2-110,font,"Volver a menú",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameFruitBase.getIns().setScreen(new MainMenuScreen());

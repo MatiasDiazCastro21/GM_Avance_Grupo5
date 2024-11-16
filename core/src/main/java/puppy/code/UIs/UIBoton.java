@@ -33,6 +33,7 @@ public class UIBoton implements UI {
         Gdx.input.setInputProcessor(stage);
     }
 
+
     public void reproducirSonido() {
         sound.play(0.05f);
     }

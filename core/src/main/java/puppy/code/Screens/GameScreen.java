@@ -117,6 +117,7 @@ public class GameScreen implements Screen {
                 }
                 music.stop();
                 musicCalaca.stop();
+                canasta.destruir();
                 GameFruitBase.getIns().setScreen(new GameOverScreen());
                 dispose();
             }

@@ -14,8 +14,6 @@ public class DropManager {
     private long lastDropTime;
     //Posible cambio de lugar
     private AudioVisualManager aVM;
-    private int multiTiempo = 300;
-    private double exponente = 1.0;
 
     public DropManager() {
         aVM = new AudioVisualManager();
@@ -31,15 +29,16 @@ public class DropManager {
 
         if(canasta.efectoCalavera())
         {
-            if (random < 2) {
+            if (random < 25) {
                 objetoEspecial();
             }
-            else if (random < 65){
+            else if (random < 101){
                 drops.add(new Bomba(aVM.getBombaT(), aVM.getBombaS()));
             }
+
         }
         else {
-            if (random < 70) {
+            if (random < 65) {
                 drops.add(new Manzana(aVM.getManzanaT(), aVM.getManzanaS()));
 
             } else if (random < 98) {
@@ -78,13 +77,6 @@ public class DropManager {
         }
     }
 
-    public void cambioVelocidad(Canasta canasta){
-        if (canasta.getPuntos() >= 100*(Math.pow(10,exponente))){
-            exponente++;
-            multiTiempo = 300 * (int)exponente;
-        }
-    }
-
     public boolean actualizarMovimiento(Canasta canasta) {
         float movimiento;
         if (TimeUtils.nanoTime() - lastDropTime > 100000000) crearDrop(canasta);
@@ -95,12 +87,7 @@ public class DropManager {
 
         for (int i = 0; i < drops.size; i++) {
             ProyectilAbs drop = drops.get(i);
-            //Prueba de cambio de velocidad exponencialmente
-            cambioVelocidad(canasta);
-            //drop.sprite.setY(drop.sprite.getY()-(300 * Gdx.graphics.getDeltaTime()));
-
-            movimiento = drop.sprite.getY()-(multiTiempo * Gdx.graphics.getDeltaTime());
-
+            movimiento = drop.sprite.getY()-(300 * Gdx.graphics.getDeltaTime());
             if (drop.interactuar(canasta, movimiento)) {
                 if (canasta.getVidas() <= 0) {
                     return false;

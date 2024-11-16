@@ -15,7 +15,7 @@ public class Canasta {
     private HitBoxManager bucket;
     private Texture bucketImage;
     private Sound sonidoHerido;
-    private int vidas = 1000;
+    private int vidas = 3;
     private int puntos = 0;
     private int velx = 400;
     private boolean herido = false;
@@ -130,6 +130,7 @@ public class Canasta {
 
     public void destruir() {
         bucketImage.dispose();
+        sonidoHerido.dispose();
     }
 
     public boolean estaHerido() {

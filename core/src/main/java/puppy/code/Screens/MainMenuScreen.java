@@ -11,16 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import puppy.code.GameFruitBase;
+import puppy.code.UIs.ConcreteUIFactory;
+import puppy.code.UIs.UI;
 import puppy.code.UIs.UIBoton;
+import puppy.code.UIs.UIFactory;
 
 
 public class MainMenuScreen implements Screen {
     private SpriteBatch batch;
     private BitmapFont font;
     private OrthographicCamera camera;
-    private UIBoton botonIniciar;
-    private UIBoton botonSalir;
-    private UIBoton botonTutorial;
+    private UI botonIniciar;
+    private UI botonSalir;
+    private UI botonTutorial;
+    private UIFactory factory;
     private Stage stage;
 
     public MainMenuScreen() {
@@ -32,9 +36,15 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        instanciarCompUI();
+    }
 
+
+    private void instanciarCompUI(){
         //Iniciar
-        botonIniciar = new UIBoton(stage,100,camera.viewportHeight/2+50,font,"Empezar juego",new ClickListener(){
+        factory = new ConcreteUIFactory();
+
+        botonIniciar = factory.crearBoton(stage,100,camera.viewportHeight/2+50,font,"Empezar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameFruitBase.getIns().setScreen(new GameScreen());
@@ -45,7 +55,7 @@ public class MainMenuScreen implements Screen {
         botonIniciar.crearComponente();
 
         //Tutorial
-        botonTutorial = new UIBoton(stage,100,camera.viewportHeight/2-10,font,"Tutorial",new ClickListener(){
+        botonTutorial = factory.crearBoton(stage,100,camera.viewportHeight/2-10,font,"Tutorial",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameFruitBase.getIns().setScreen(new TutorialControlScreen());
@@ -56,7 +66,7 @@ public class MainMenuScreen implements Screen {
 
 
         //Salir
-        botonSalir = new UIBoton(stage,100,camera.viewportHeight/2-70,font,"Cerrar juego",new ClickListener(){
+        botonSalir = factory.crearBoton(stage,100,camera.viewportHeight/2-70,font,"Cerrar juego",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
@@ -64,6 +74,7 @@ public class MainMenuScreen implements Screen {
         });
         botonSalir.crearComponente();
     }
+
 
 
     @Override
