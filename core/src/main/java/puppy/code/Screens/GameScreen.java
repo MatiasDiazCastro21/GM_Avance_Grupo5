@@ -15,6 +15,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import puppy.code.Player.Canasta;
 import puppy.code.Managers.DropManager;
 import puppy.code.GameFruitBase;
+import puppy.code.Player.MovimientoConDash;
+import puppy.code.Player.MovimientoNormal;
+import puppy.code.Player.MovimientoRapido;
 
 public class GameScreen implements Screen {
     private OrthographicCamera camera;
@@ -78,6 +81,17 @@ public class GameScreen implements Screen {
         batch.begin();
     }
 
+    private void movimientoCanasta(){
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            canasta.setMovimientoStrategy(new MovimientoRapido());
+        }else{
+            canasta.setMovimientoStrategy(new MovimientoNormal());
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) && canasta.getCargasDash() > 0){
+                canasta.setMovimientoStrategy(new MovimientoConDash());
+            }
+        }
+    }
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
@@ -86,6 +100,8 @@ public class GameScreen implements Screen {
         //actualizar
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        //Strategy
+        movimientoCanasta();
 
         if (canasta.efectoCalavera()) {
             music.pause();

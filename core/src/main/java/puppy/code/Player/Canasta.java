@@ -13,27 +13,30 @@ import puppy.code.Managers.HitBoxManager;
 
 public class Canasta {
     private HitBoxManager bucket;
-    private Texture bucketImage;
-    private Sound sonidoHerido;
+    private MovimientoStrategy movimientoStrategy;
+    private final Texture bucketImage;
+    private final Sound sonidoHerido;
     private int vidas = 3;
     private int puntos = 0;
-    private int velx = 400;
+    private final int velx = 400;
     private boolean herido = false;
-    private int tiempoHeridoMax = 50;
+    private final int tiempoHeridoMax = 50;
     private int tiempoHerido;
     private boolean efectoCalavera = false;
     private long tiempoCalavera;
     private int cargarDash = 3;
     private static final int MAX_CARGAS_DASH = 3;
     private boolean tieneDash = false;
-    private static final float DASH_DISTANCE = 190;
+    private final float DASH_DISTANCE = 190;
     private int direccion;
-    private Sound sonidoDash;
+    private final Sound sonidoDash;
 
     public Canasta(Texture tex, Sound ss) {
         bucketImage = tex;
         sonidoHerido = ss;
         sonidoDash = Gdx.audio.newSound(Gdx.files.internal("dashSound.mp3"));
+        //default
+        movimientoStrategy = new MovimientoNormal();
         crear();
     }
 
@@ -97,35 +100,20 @@ public class Canasta {
         }
     }
 
-    public void actualizar() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            direccion = -1;
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                bucket.setX(bucket.getX() - velx * Gdx.graphics.getDeltaTime() * 2);
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
-                dash(); // Usar dash cuando Shift es presionado
-            } else {
-                bucket.setX(bucket.getX() - velx * Gdx.graphics.getDeltaTime());
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            direccion = 1;
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                bucket.setX(bucket.getX() + velx * Gdx.graphics.getDeltaTime() * 2);
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
-                dash(); // Usar dash cuando Shift es presionado
-            } else {
-                bucket.setX(bucket.getX() + velx * Gdx.graphics.getDeltaTime());
-            }
-        }
+    public void setMovimientoStrategy(MovimientoStrategy movimientoStrategy){
+        this.movimientoStrategy = movimientoStrategy;
+    }
 
-        // que no se salga de los bordes izq y der
+    public void actualizar(){
+        movimientoStrategy.mover(this);
+
         if (bucket.hitBox.x < 0) {
             bucket.setX(0);
         }
         if (bucket.hitBox.x > 800 - bucket.hitBox.width) {
             bucket.setX(800 - bucket.hitBox.width);
         }
+
     }
 
     public void destruir() {
@@ -154,29 +142,6 @@ public class Canasta {
         return tiempoCalavera;
     }
 
-    public void dash() {
-        if (cargarDash > 0) { // Usar solo si hay cargas disponibles
-            if (direccion != 0) {
-                if (bucket.hitBox.x <= 0 && direccion == -1) {
-                    bucket.setX(0);
-                } else if (bucket.hitBox.x >= 800 - bucket.hitBox.width && direccion == 1) {
-                    bucket.setX(800 - bucket.hitBox.width);
-                } else {
-                    if (!herido) {
-                        bucket.setX(bucket.getX() + (DASH_DISTANCE * direccion));
-                        bucket.setX(MathUtils.clamp(bucket.getX(), 0, 800 - bucket.hitBox.width));
-                        sonidoDash.play(0.05f);
-                        cargarDash--;
-                    }
-                }
-                // Consumir una carga de dash
-                if (cargarDash == 0) {
-                    tieneDash = false; // Desactivar si se agotaron las cargas
-                }
-            }
-        }
-    }
-
     public void obtenerDash() {
         if (cargarDash < MAX_CARGAS_DASH) {
             cargarDash++;
@@ -190,5 +155,89 @@ public class Canasta {
 
     public int getMaxCargasDash() {
         return MAX_CARGAS_DASH;
+    }
+
+    public boolean isTieneDash() {
+        return tieneDash;
+    }
+
+
+    public void setVidas(int vidas) {
+        this.vidas = vidas;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
+
+    public void setHerido(boolean herido) {
+        this.herido = herido;
+    }
+
+    public void setTiempoHerido(int tiempoHerido) {
+        this.tiempoHerido = tiempoHerido;
+    }
+
+    public void setEfectoCalavera(boolean efectoCalavera) {
+        this.efectoCalavera = efectoCalavera;
+    }
+
+    public void setTiempoCalavera(long tiempoCalavera) {
+        this.tiempoCalavera = tiempoCalavera;
+    }
+
+    public void setCargarDash(int cargarDash) {
+        this.cargarDash = cargarDash;
+    }
+
+    public void setTieneDash(boolean tieneDash) {
+        this.tieneDash = tieneDash;
+    }
+
+    public void setDireccion(int direccion) {
+        this.direccion = direccion;
+    }
+
+    public int getDireccion(){
+        return direccion;
+    }
+
+    public void setBucket(HitBoxManager bucket) {
+        this.bucket = bucket;
+    }
+
+    public Texture getBucketImage() {
+        return bucketImage;
+    }
+
+    public Sound getSonidoHerido() {
+        return sonidoHerido;
+    }
+
+    public int getTiempoHeridoMax() {
+        return tiempoHeridoMax;
+    }
+
+    public int getTiempoHerido() {
+        return tiempoHerido;
+    }
+
+    public boolean isEfectoCalavera() {
+        return efectoCalavera;
+    }
+
+    public Sound getSonidoDash() {
+        return sonidoDash;
+    }
+    public float getDASH_DISTANCE() {
+        return DASH_DISTANCE;
+    }
+
+    public int getVelx() {
+        return velx;
+    }
+
+    public HitBoxManager getBucket() {
+        return bucket;
     }
 }

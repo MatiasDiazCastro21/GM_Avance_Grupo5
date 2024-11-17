@@ -13,10 +13,10 @@ public class DropManager {
     private Array<ProyectilAbs> drops;
     private long lastDropTime;
     //Posible cambio de lugar
-    private AudioVisualManager aVM;
+    private ProbabilityManager pM;
 
     public DropManager() {
-        aVM = new AudioVisualManager();
+        pM = new ProbabilityManager();
     }
 
     public void crearConCanasta(Canasta c) {
@@ -25,50 +25,9 @@ public class DropManager {
     }
 
     private void crearDrop(Canasta canasta) {
-        int random = MathUtils.random(1, 100);
-
-        if(canasta.efectoCalavera())
-        {
-            if (random < 25) {
-                objetoEspecial();
-            }
-            else if (random < 101){
-                drops.add(new Bomba(aVM.getBombaT(), aVM.getBombaS()));
-            }
-
-        }
-        else {
-            if (random < 65) {
-                drops.add(new Manzana(aVM.getManzanaT(), aVM.getManzanaS()));
-
-            } else if (random < 98) {
-                drops.add(new Bomba(aVM.getBombaT(), aVM.getBombaS()));
-            }
-            else{
-                objetoEspecial();
-            }
-
-        }
+        ProyectilAbs drop = pM.getDrop(canasta.efectoCalavera());
+        drops.add(drop);
         lastDropTime = TimeUtils.nanoTime();
-
-
-    }
-
-    private void objetoEspecial(){
-        int random = MathUtils.random(1, 100);
-        if (random < 25) {
-            drops.add(new VidaExtra(aVM.getVidaExtraT(), aVM.getVidaExtraS()));
-
-        } else if (random < 50) {
-            drops.add(new ScoreExtra(aVM.getManzanaOroT(), aVM.getManzanaOroS()));
-        }
-        else if (random < 75)
-        {
-            drops.add(new Dash(aVM.getDashT(), aVM.getDashS()));
-        }
-        else {
-            drops.add(new Calavera(aVM.getCalaveraT(), aVM.getManzanaOroS()));
-        }
     }
 
     public void dibujarHitbox(ShapeRenderer shapeRenderer) {
@@ -106,7 +65,7 @@ public class DropManager {
 
     public void destruir() {
         drops.clear();
-        aVM.dispose();
+        pM.dispose();
     }
 
     public long getLastDropTime() {
