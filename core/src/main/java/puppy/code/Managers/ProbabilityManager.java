@@ -15,10 +15,10 @@ public class ProbabilityManager {
     public ProyectilAbs getDrop(boolean efectoCalavera) {
         int random = MathUtils.random(1, 100);
         if (efectoCalavera) {
-            if (random < 25) {
-                getDrop();
+            if (random < 15) {
+                getDropEspecial();
             }
-            else if (random < 100) {
+            else if (random <= 100) {
                 drop = new Bomba(aVM.getBombaT(), aVM.getBombaS());
             }
         }
@@ -30,17 +30,17 @@ public class ProbabilityManager {
                 drop = new Bomba(aVM.getBombaT(), aVM.getBombaS());
             }
             else {
-                getDrop();
+                getDropEspecial();
             }
         }
         return drop;
 
     }
-    private void getDrop(){
+
+    private void getDropEspecial(){
         int random = MathUtils.random(1, 100);
         if (random < 25) {
             drop = new VidaExtra(aVM.getVidaExtraT(), aVM.getVidaExtraS());
-
         }
         else if (random < 50) {
             drop = new ScoreExtra(aVM.getManzanaOroT(), aVM.getManzanaOroS());
@@ -49,7 +49,7 @@ public class ProbabilityManager {
             drop = new Dash(aVM.getDashT(), aVM.getDashS());
         }
         else {
-            drop = new Calavera(aVM.getCalaveraT(), aVM.getManzanaOroS());
+            drop = new Calavera(aVM.getCalaveraT(), aVM.getCalaveraS());
         }
     }
 

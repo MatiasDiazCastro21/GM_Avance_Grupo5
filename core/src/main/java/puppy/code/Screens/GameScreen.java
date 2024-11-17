@@ -38,6 +38,7 @@ public class GameScreen implements Screen {
         this.font = GameFruitBase.getIns().getFont();
         shapeRenderer = new ShapeRenderer();
         cargarAssets();
+        canasta = new Canasta();
         dropManager = new  DropManager();
         music.setLooping(true);
         music.setVolume(0.05f);
@@ -56,15 +57,10 @@ public class GameScreen implements Screen {
     }
 
     private void cargarAssets(){
-        Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurtSound.mp3"));
-        Texture canastaTexture = new Texture(Gdx.files.internal("canasta.png"));
-
         fondo = new Texture(Gdx.files.internal("Fondo_juego.png"));
         fondoCalavera = new Texture(Gdx.files.internal("FondoCalavera.png"));
         music = Gdx.audio.newMusic(Gdx.files.internal("Music.mp3"));
         musicCalaca = Gdx.audio.newMusic(Gdx.files.internal("MusicaCalavera.mp3"));
-
-        canasta = new Canasta(canastaTexture,hurtSound);
     }
 
     private void dibujarComponentes(){
@@ -72,7 +68,7 @@ public class GameScreen implements Screen {
         font.draw(batch, "Puntos totales: " + canasta.getPuntos(), 5, 475);
         font.draw(batch, "Vidas : " + canasta.getVidas(), 650, 475);
         font.draw(batch, "HighScore : " + GameFruitBase.getIns().getHigherScore(), camera.viewportWidth/2-50, 475);
-        font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + canasta.getMaxCargasDash(), 5, 450);
+        font.draw(batch, "Dash: " + canasta.getCargasDash() + "/" + "3", 5, 450);
         canasta.dibujar(batch);
         batch.end();
         if(hitBoxOn){

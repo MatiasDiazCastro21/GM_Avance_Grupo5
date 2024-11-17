@@ -9,13 +9,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
+import puppy.code.Managers.AudioVisualManager;
 import puppy.code.Managers.HitBoxManager;
 
 public class Canasta {
     private HitBoxManager bucket;
     private MovimientoStrategy movimientoStrategy;
-    private final Texture bucketImage;
-    private final Sound sonidoHerido;
     private int vidas = 3;
     private int puntos = 0;
     private final int velx = 400;
@@ -25,16 +24,9 @@ public class Canasta {
     private boolean efectoCalavera = false;
     private long tiempoCalavera;
     private int cargarDash = 3;
-    private static final int MAX_CARGAS_DASH = 3;
-    private boolean tieneDash = false;
-    private final float DASH_DISTANCE = 190;
     private int direccion;
-    private final Sound sonidoDash;
 
-    public Canasta(Texture tex, Sound ss) {
-        bucketImage = tex;
-        sonidoHerido = ss;
-        sonidoDash = Gdx.audio.newSound(Gdx.files.internal("dashSound.mp3"));
+    public Canasta() {
         //default
         movimientoStrategy = new MovimientoNormal();
         crear();
@@ -58,7 +50,7 @@ public class Canasta {
 
     public void crear() {
         bucket = new HitBoxManager();
-        float posX = (float)((800 / 2) - (bucketImage.getWidth() / 2));
+        float posX = (float)((800 / 2) - (AudioVisualManager.getCanastaTexture().getWidth() / 2));
         float posY = 20;
 
         bucket.setX(posX);
@@ -67,15 +59,15 @@ public class Canasta {
         bucket.hitBox.x = posX+5;
         bucket.hitBox.y = posY+15;
         bucket.setHitBoxPlusX(5);
-        bucket.hitBox.width = bucketImage.getWidth()-10;
-        bucket.hitBox.height = bucketImage.getHeight()-30;
+        bucket.hitBox.width = AudioVisualManager.getCanastaTexture().getWidth()-10;
+        bucket.hitBox.height = AudioVisualManager.getCanastaTexture().getHeight()-30;
     }
 
     public void dañar() {
         vidas--;
         herido = true;
         tiempoHerido = tiempoHeridoMax;
-        sonidoHerido.play(0.05f);
+        AudioVisualManager.getHurtSound().play(0.05f);
     }
 
     public void sumarVida() {
@@ -89,10 +81,10 @@ public class Canasta {
 
     public void dibujar(SpriteBatch batch) {
         if (!herido) {
-            batch.draw(bucketImage, bucket.getX(), bucket.getY());
+            batch.draw(AudioVisualManager.getCanastaTexture(), bucket.getX(), bucket.getY());
         } else {
             direccion = 0;
-            batch.draw(bucketImage, bucket.getX(), bucket.getY() + MathUtils.random(-5, 5));
+            batch.draw(AudioVisualManager.getCanastaTexture(), bucket.getX(), bucket.getY() + MathUtils.random(-5, 5));
             tiempoHerido--;
             if (tiempoHerido <= 0) {
                 herido = false;
@@ -117,8 +109,8 @@ public class Canasta {
     }
 
     public void destruir() {
-        bucketImage.dispose();
-        sonidoHerido.dispose();
+        AudioVisualManager.getCanastaTexture().dispose();
+        AudioVisualManager.getHurtSound().dispose();
     }
 
     public boolean estaHerido() {
@@ -143,24 +135,14 @@ public class Canasta {
     }
 
     public void obtenerDash() {
-        if (cargarDash < MAX_CARGAS_DASH) {
+        if (cargarDash < 3) {
             cargarDash++;
-            tieneDash = true;
         }
     }
 
     public int getCargasDash() {
         return cargarDash;
     }
-
-    public int getMaxCargasDash() {
-        return MAX_CARGAS_DASH;
-    }
-
-    public boolean isTieneDash() {
-        return tieneDash;
-    }
-
 
     public void setVidas(int vidas) {
         this.vidas = vidas;
@@ -190,9 +172,6 @@ public class Canasta {
         this.cargarDash = cargarDash;
     }
 
-    public void setTieneDash(boolean tieneDash) {
-        this.tieneDash = tieneDash;
-    }
 
     public void setDireccion(int direccion) {
         this.direccion = direccion;
@@ -207,11 +186,7 @@ public class Canasta {
     }
 
     public Texture getBucketImage() {
-        return bucketImage;
-    }
-
-    public Sound getSonidoHerido() {
-        return sonidoHerido;
+        return AudioVisualManager.getCanastaTexture();
     }
 
     public int getTiempoHeridoMax() {
@@ -224,13 +199,6 @@ public class Canasta {
 
     public boolean isEfectoCalavera() {
         return efectoCalavera;
-    }
-
-    public Sound getSonidoDash() {
-        return sonidoDash;
-    }
-    public float getDASH_DISTANCE() {
-        return DASH_DISTANCE;
     }
 
     public int getVelx() {
